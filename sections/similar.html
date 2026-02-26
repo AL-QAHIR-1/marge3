@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متشابهات - مرجع الأزهري</title>
+  <link rel="icon" href="images/logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    .main-header {
+    background: linear-gradient(135deg, #0f2c59, #1c3f7a);
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    width: 49px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+
+.main-header h1 {
+  font-family: "Amiri", serif;
+    font-size: 21px;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.back-btn {
+    background: rgb(175, 96, 6);
+    border: none;
+    color: white;
+    padding: 11px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    font-family: inherit;
+
+}
+
+.back-btn:hover {
+    background: rgba(255, 251, 251, 0.699);
+    color: black;
+}
+
+
+.section-title {
+    text-align: center;
+    font-family: "Amiri", serif;
+    font-size: 30px;
+    margin-bottom: 40px;
+}
+
+.surah-list {
+    max-width: 700px;
+    margin: auto;
+}
+
+.surah-item {
+    background: rgb(230 232 243 / 60%);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 18px;
+    display: flex;
+    box-shadow: 0 8px 20px rgb(0 0 0 / 32%);
+    border: 1px solid #eee;
+    align-items: center;
+    flex-direction: row;
+    font: small-caption;
+    border-right: dashed;
+    justify-content: space-between;
+    direction: rtl;  
+}
+
+.surah-item span {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.surah-item button {
+    background: #0f2c59;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: system-ui;
+}
+
+.surah-item button.saved {
+    background: rgb(175, 96, 6);
+    color: #ffffff;
+    font-family: system-ui;
+}
+.surah-name {
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f2c59;
+    transition: 0.3s;
+}
+
+.surah-name:hover {
+    color: #d4af37;
+}
+.progress-box {
+    margin: 20px 0;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #ddd;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #0f2c59, #af6006);
+    transition: 0.4s;
+}
+</style>
+</head>
+
+<body>
+
+<header class="main-header">
+
+    <button class="back-btn" onclick="goBack()">
+        <span style='font-size:16px;'>&#8658;</span>
+    </button>
+
+    <h1>مَرجِع الأَزّهَرِي</h1>
+    
+    <div class="logo-title">
+        <img src="../images/logo.png" alt="logo" class="logo">
+    </div>
+
+</header>
+
+<main>
+    <h2 class="section-title"> آيات المتشابة</h2>
+
+    <div class="surah-list">
+
+     <div class="progress-box">
+    <div class="progress-info">
+        <span>تقدم المتشابهات</span>
+        <span id="mutashabihat-count">0 / 114</span>
+    </div>
+    <div class="progress-bar">
+        <div class="progress-fill" id="mutashabihat-progress"></div>
+    </div>
+</div> 
+
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=1" class="surah-name">
+        1- الفاتحة
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="1">
+        تم الحفظ
+    </button>
+</div>
+
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=2" class="surah-name">
+        2- البقرة
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="2">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=3" class="surah-name">
+        3- آل عمران 
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="3">
+        تم الحفظ
+    </button>
+</div>
+
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=4" class="surah-name">
+       4- النساء
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="4">
+        تم الحفظ
+    </button>
+</div>
+
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=5" class="surah-name">
+       5- المائدة
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="5">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=6" class="surah-name">
+       6- الأنعام
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="6">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=7" class="surah-name">
+       7- الأعراف
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="7">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=8" class="surah-name">
+       8- الأنفال
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="8">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=9" class="surah-name">
+       9- التوبة
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="9">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=10" class="surah-name">
+      10- يونس 
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="10">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=11" class="surah-name">
+       11- هود
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="11">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=12" class="surah-name">
+       12- يوسف
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="12">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=13" class="surah-name">
+       13- الرعد
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="13">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=14" class="surah-name">
+       14- إبراهيم
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="14">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=15" class="surah-name">
+       15- الحجر
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="15">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=16" class="surah-name">
+       16- النحل
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="16">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=17" class="surah-name">
+       17- الإسراء
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="17">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=18" class="surah-name">
+       18- الكهف
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="18">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=19" class="surah-name">
+       19- مريم
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="19">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=20" class="surah-name">
+       20- طه
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="20">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=21" class="surah-name">
+       21- الأنبياء
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="21">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=22" class="surah-name">
+       22- الحج
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="22">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=23" class="surah-name">
+       23- المؤمنون
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="23">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=24" class="surah-name">
+       24- النور
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="24">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=25" class="surah-name">
+       25- الفرقان
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="25">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=26" class="surah-name">
+       26- الشعراء
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="26">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=27" class="surah-name">
+       27- النمل
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="27">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=28" class="surah-name">
+       28- القصص
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="28">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=29" class="surah-name">
+       29- العنكبوت
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="29">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=30" class="surah-name">
+       30- الروم
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="30">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=31" class="surah-name">
+       31- لقمان
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="31">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=32" class="surah-name">
+       32- السجدة
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="32">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=33" class="surah-name">
+      33- الأحزاب 
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="33">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=34" class="surah-name">
+       34- سبأ
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="34">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=35" class="surah-name">
+       35- فاطر
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="35">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=36" class="surah-name">
+    36- يس   
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="36">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=37" class="surah-name">
+       37- الصافات
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="37">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=38" class="surah-name">
+       38- ص
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="38">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=39" class="surah-name">
+       39- الزمر
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="39">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=40" class="surah-name">
+       40- غافر
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="40">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=41" class="surah-name">
+       41- فصلت
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="41">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=42" class="surah-name">
+       42- الشورى
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="42">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=43" class="surah-name">
+       43- الزخرف
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="43">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=44" class="surah-name">
+       44- الدخان
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="44">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=45" class="surah-name">
+       45- الجاثية
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="45">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=46" class="surah-name">
+       46- الأحقاف
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="46">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=47" class="surah-name">
+     47- محمد  
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="47">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=48" class="surah-name">
+      48- الفتح 
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="48">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=49" class="surah-name">
+    49- الحجرات   
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="49">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=50" class="surah-name">
+       50- ق
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="50">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=51" class="surah-name">
+       51-الذاريات
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="51">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=52" class="surah-name">
+     52-الطور  
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="52">
+        تم الحفظ
+    </button>
+</div><div class="surah-item">
+    <a href="mutashabihat-view.html?id=53" class="surah-name">
+       53-النجم
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="53">
+        تم الحفظ
+    </button>
+</div><div class="surah-item">
+    <a href="mutashabihat-view.html?id=54" class="surah-name">
+       54-القمر
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="54">
+        تم الحفظ
+    </button>
+</div><div class="surah-item">
+    <a href="mutashabihat-view.html?id=55" class="surah-name">
+       55-الرحمن
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="55">
+        تم الحفظ
+    </button>
+</div><div class="surah-item">
+    <a href="mutashabihat-view.html?id=56" class="surah-name">
+      56-الواقعة 
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="56">
+        تم الحفظ
+    </button>
+</div><div class="surah-item">
+    <a href="mutashabihat-view.html?id=57" class="surah-name">
+       57-الحديد
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="57">
+        تم الحفظ
+    </button>
+</div><div class="surah-item">
+    <a href="mutashabihat-view.html?id=58" class="surah-name">
+       58-المجادلة
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="58">
+        تم الحفظ
+    </button>
+</div><div class="surah-item">
+    <a href="mutashabihat-view.html?id=59" class="surah-name">
+       59-الحشر
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="59">
+        تم الحفظ
+    </button>
+</div><div class="surah-item">
+    <a href="mutashabihat-view.html?id=60" class="surah-name">
+       60-الممتحنة
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="60">
+        تم الحفظ
+    </button>
+</div><div class="surah-item">
+    <a href="mutashabihat-view.html?id=61" class="surah-name">
+       61-الصف 
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="61">
+        تم الحفظ
+    </button>
+</div><div class="surah-item">
+    <a href="mutashabihat-view.html?id=62" class="surah-name">
+       62-الجمعة
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="62">
+        تم الحفظ
+    </button>
+</div><div class="surah-item">
+    <a href="mutashabihat-view.html?id=63" class="surah-name">
+      63-المنافقون 
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="63">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=64" class="surah-name">
+    64-التغابن   
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="64">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=65" class="surah-name">
+      65-الطلاق 
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="65">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=66" class="surah-name">
+       66-التحريم
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="66">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=67" class="surah-name">
+       67-الملك
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="67">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=68" class="surah-name">
+     68-القلم  
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="68">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=69" class="surah-name">
+      69-الحاقة 
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="69">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=70" class="surah-name">
+       70-المعارج
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="70">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=71" class="surah-name">
+       71-نوح
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="71">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=72" class="surah-name">
+       72-الجن
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="72">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=73" class="surah-name">
+      73-المزمل 
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="73">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=74" class="surah-name">
+       74-المدثر
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="74">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=75" class="surah-name">
+       75-القيامة
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="75">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=76" class="surah-name">
+       76-الانسان
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="76">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=77" class="surah-name">
+      77-المرسلات 
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="77">
+        تم الحفظ
+    </button>
+</div>
+<div class="surah-item">
+    <a href="mutashabihat-view.html?id=78" class="surah-name">
+      78-جزء عم
+    </a>
+    <button class="save-btn" data-section="mutashabihat" data-mutashabiha="78">
+        تم الحفظ
+    </button>
+</div>
+
+    
+
+</main>
+<script>
+    // ===============================
+// حفظ المتشابهات + شريط التقدم
+// ===============================
+
+const TOTAL_MUTASHABIHAT = 78; // عدد العناصر عندك
+
+function getSaved() {
+    return JSON.parse(localStorage.getItem("mutashabihat")) || [];
+}
+
+function setSaved(data) {
+    localStorage.setItem("mutashabihat", JSON.stringify(data));
+}
+
+function updateProgress() {
+
+    const saved = getSaved();
+    const count = saved.length;
+    const percent = (count / TOTAL_MUTASHABIHAT) * 100;
+
+    const progressBar = document.getElementById("mutashabihat-progress");
+    const countText = document.getElementById("mutashabihat-count");
+
+    if (progressBar) {
+        progressBar.style.width = percent + "%";
+    }
+
+    if (countText) {
+        countText.textContent = count + " / " + TOTAL_MUTASHABIHAT;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const buttons = document.querySelectorAll(".save-btn");
+    const saved = getSaved();
+
+    buttons.forEach(button => {
+
+        const id = button.dataset.mutashabiha;
+
+        // لو محفوظ قبل كده
+        if (saved.includes(id)) {
+            button.classList.add("saved");
+            button.textContent = "✓ محفوظ";
+        }
+
+        button.addEventListener("click", function () {
+
+            let savedData = getSaved();
+
+            if (savedData.includes(id)) {
+                savedData = savedData.filter(item => item !== id);
+                button.classList.remove("saved");
+                button.textContent = "تم الحفظ";
+            } else {
+                savedData.push(id);
+                button.classList.add("saved");
+                button.textContent = "✓ محفوظ";
+            }
+
+            setSaved(savedData);
+            updateProgress();
+        });
+
+    });
+
+    updateProgress();
+});
+
+ //زر الرجوع 
+function goBack() {
+    window.history.back();
+}
+</script>
+<footer>
+    <p>© مرجع الأزهري</p>
+</footer>
+
+
+
+</body>
+</html>
