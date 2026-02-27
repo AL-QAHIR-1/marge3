@@ -15,6 +15,29 @@
   background: #f9fbff;
   color: #0b2c4d;
 }
+    .main-header {
+    background: linear-gradient(135deg, #0f2c59, #1c3f7a);
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    width: 49px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 10px;
+}
 
 .contact-page {
   padding: 80px 10%;
@@ -168,37 +191,19 @@
   </style>
 </head>
 <body>
- <header class="main-header">
-  <div class="container">
+<header class="main-header">
 
-    <!-- Logo -->
-    <div class="logo">
-      <img src="/images/logo.png" alt="Logo">
-      <span>مَرجِع الأَزّهَرِي</span>
+    <button class="back-btn" onclick="goBack()">
+        <span style='font-size:16px;'>&#8658;</span>
+    </button>
+
+    <h1>مَرجِع الأَزّهَرِي</h1>
+    
+    <div class="logo-title">
+        <img src="../images/logo.png" alt="logo" class="logo">
     </div>
 
-    <!-- Navigation -->
-    <nav class="nav">
-      <a href="index.html">الرئيسية</a>
-      <a href="index.html#levels">الكورسات</a>
-      <a href="#">عن المنصة</a>
-      <a href="contact.html">تواصل معنا</a>
-    </nav>
-
-    <!-- Actions -->
-    <div class="actions">
-      <button class="btn login">تسجيل دخول</button>
-      <button class="btn signup">إنشاء حساب</button>
-    </div>
-
-    <!-- Mobile Menu Icon -->
-    <div class="menu-icon" id="menuToggle">
-      ☰
-    </div>
-
-  </div>
 </header>
-
 <section class="contact-page">
   <h1>تواصل معنا</h1>
   <p>نحن هنا لمساعدتك. يمكنك الاتصال بنا عبر أي من الطرق التالية:</p>
@@ -231,4 +236,5 @@ function goBack() {
 
 </body>
 </html>
+
 
