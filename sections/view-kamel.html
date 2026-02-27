@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض السورة</title>
+
+<link rel="icon" href="../images/logo.png" type="image/png">
+
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+html, body {
+    height:100%;
+}
+
+body{
+    margin:0;
+    font-family:"Cairo",sans-serif;
+    transition:.3s;
+    display:flex;
+    flex-direction:column;
+}
+
+.viewer-header{
+    flex-shrink:0;
+}
+
+#pdf-container{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+body.light{ background:#f4f6fb; }
+
+.viewer-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 20px;
+    background:linear-gradient(135deg,#0f2c59,#1c3f7a);
+    color:white;
+}
+
+.right-section{ display:flex; align-items:center; gap:10px; }
+.logo{ width:40px; height:40px; object-fit:contain; }
+.site-title{ font-size:18px; margin:0; }
+
+.surah-name{
+    font-family:"Amiri",serif;
+    font-size:22px;
+    margin:0;
+}
+
+.left-section{ display:flex; gap:10px; }
+
+.left-section button{
+    background:#af6006;
+    border:none;
+    color:white;
+    padding:6px 12px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+
+.ashom{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    align-items:center;
+    gap:25px;
+    background:rgba(9,42,92,.35);
+    padding:8px 20px;
+    border-radius:18px;
+    backdrop-filter:blur(6px);
+    z-index:1000;
+}
+
+.ashom button{
+    background:#092463;
+    border:none;
+    color:#fff;
+    font-size:16px;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.ashom button:hover{
+    background:#123a85;
+}
+
+.page-box{
+    display: flex;
+    align-items: flex-end;
+    gap: 0px;
+    background: #226bdb00;
+    padding: 0px 18px;
+    border-radius: 18px;
+    font-weight: 600;
+    border: solid;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.page-box input{
+    width: 25px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0px;
+    background: #1c3f7a00;
+}
+
+.page-box span{
+    color: #000000;
+    font-size: 13px;
+}
+
+#page-img{
+    max-width:100%;
+    max-height:100%;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    transition:opacity .25s ease;
+}
+
+.finish-message{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:3000;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .3s ease;
+    color:#1d3b2a;
+direction:rtl;
+}
+
+.finish-message.active{
+    opacity:1;
+    visibility:visible;
+}
+
+.finish-message .box{
+    background:#fdfaf3;
+    width:90%;
+    max-width:340px;
+    padding:25px 20px;
+    border-radius:16px;
+    text-align:center;
+    border:2px solid #c7a84a;
+    box-shadow:0 10px 25px rgba(0,0,0,0.25);
+    animation:fadeInScale .3s ease;
+}
+
+@keyframes fadeInScale{
+    from{transform:scale(.8);opacity:0}
+    to{transform:scale(1);opacity:1}
+}
+
+.finish-message h3{
+    font-family:"Amiri",serif;
+    font-size:20px;
+    margin-bottom:18px;
+    color:#1d3b2a;
+}
+
+.finish-message button{
+    background:#1d3b2a;
+    color:#fff;
+    border:none;
+    padding:8px 20px;
+    border-radius:25px;
+    font-size:15px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.finish-message button:hover{
+    background:#2e5c43;
+box-shadow:0 8px 20px rgba(175,96,6,0.5);
+}
+.progress-wrapper{
+    width:100%;
+    height:6px;
+    background:#dcdcdc;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#0f2c59,#1c3f7a);
+    transition:width .3s ease;
+}
+.progress-wrapper{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:5px;
+    background:rgba(0,0,0,.1);
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#0f2c59,#1c3f7a);
+    transition:width .3s ease;
+}
+
+</style>
+</head>
+
+<body class="light">
+
+<div class="viewer-header">
+    <div class="left-section">
+        <button onclick="goBack()">↩</button>
+    </div>
+
+    <h2 id="surah-name" class="surah-name"></h2>
+
+    <div class="right-section">
+        <img src="../images/logo.png" class="logo">
+    </div>
+</div>
+<div class="progress-wrapper">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div class="page-counter" id="pageCounter"></div>
+<div class="ashom">
+    <button onclick="prevPage()">▶</button>
+
+    <div class="page-box">
+        <input type="number" id="pageInput">
+        <span id="totalPages"></span>
+    </div>
+
+    <button onclick="nextPage()">◀</button>
+</div>
+
+<div id="pdf-container">
+    <div class="progress-wrapper">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+    <img id="page-img" loading="lazy">
+    
+    <div class="finish-message" id="finishBox">
+    <div class="box">
+        <h3 id="nextSurahName"></h3>
+        <button onclick="goNextSurah()">قراءة</button>
+    </div>
+</div>
+
+<script>
+
+
+/* بيانات السور */
+const surahs = {
+1:{name:"الفاتحة",start:4,end:4},
+2:{name:"البقرة",start:5,end:52},
+3:{name:"آل عمران",start:53,end:79},
+4:{name:"النساء",start:80,end:109},
+5:{name:"المائدة",start:109,end:130},
+6:{name:"الأنعام",start:131,end:153},
+7:{name:"الأعراف",start:154,end:179},
+8:{name:"الأنفال",start:180,end:189},
+9:{name:"التوبة",start:190,end:210},
+10:{name:"يونس",start:211,end:224},
+11:{name:"هود",start:224,end:238},
+12:{name:"يوسف",start:238,end:251},
+13:{name:"الرعد",start:252,end:258},
+14:{name:"إبراهيم",start:258,end:264},
+15:{name:"الحجر",start:264,end:270},
+16:{name:"النحل",start:270,end:284},
+17:{name:"الإسراء",start:285,end:296},
+18:{name:"الكهف",start:296,end:307},
+19:{name:"مريم",start:308,end:315},
+20:{name:"طه",start:315,end:324},
+21:{name:"الأنبياء",start:325,end:334},
+22:{name:"الحج",start:335,end:344},
+23:{name:"المؤمنون",start:345,end:352},
+24:{name:"النور",start:353,end:362},
+25:{name:"الفرقان",start:362,end:369},
+26:{name:"الشعراء",start:370,end:379},
+27:{name:"النمل",start:380,end:388},
+28:{name:"القصص",start:388,end:399},
+29:{name:"العنكبوت",start:399,end:407},
+30:{name:"الروم",start:407,end:413},
+31:{name:"لقمان",start:414,end:417},
+32:{name:"السجدة",start:418,end:420},
+33:{name:"الأحزاب",start:421,end:430},
+34:{name:"سبأ",start:431,end:437},
+35:{name:"فاطر",start:437,end:443},
+36:{name:"يس",start:443,end:448},
+37:{name:"الصافات",start:449,end:455},
+38:{name:"ص",start:456,end:461},
+39:{name:"الزمر",start:461,end:470},
+40:{name:"غافر",start:470,end:479},
+41:{name:"فصلت",start:480,end:487},
+42:{name:"الشورى",start:486,end:492},
+43:{name:"الزخرف",start:492,end:498},
+44:{name:"الدخان",start:499,end:501},
+45:{name:"الجاثية",start:502,end:505},
+46:{name:"الأحقاف",start:505,end:509},
+47:{name:"محمد",start:510,end:513},
+48:{name:"الفتح",start:514,end:518},
+49:{name:"الحجرات",start:518,end:520},
+50:{name:"ق",start:521,end:523},
+51:{name:"الذاريات",start:523,end:526},
+52:{name:"الطور",start:526,end:528},
+53:{name:"النجم",start:529,end:531},
+54:{name:"القمر",start:531,end:534},
+55:{name:"الرحمن",start:534,end:537},
+56:{name:"الواقعة",start:537,end:540},
+57:{name:"الحديد",start:540,end:544},
+58:{name:"المجادلة",start:545,end:548},
+59:{name:"الحشر",start:548,end:551},
+60:{name:"الممتحنة",start:552,end:554},
+61:{name:"الصف",start:554,end:555},
+62:{name:"الجمعة",start:556,end:557},
+63:{name:"المنافقون",start:557,end:558},
+64:{name:"التغابن",start:559,end:560},
+65:{name:"الطلاق",start:561,end:562},
+66:{name:"التحريم",start:563,end:564},
+67:{name:"الملك",start:565,end:567},
+68:{name:"القلم",start:567,end:569},
+69:{name:"الحاقة",start:569,end:571},
+70:{name:"المعارج",start:571,end:573},
+71:{name:"نوح",start:573,end:574},
+72:{name:"الجن",start:575,end:576},
+73:{name:"المزمل",start:577,end:578},
+74:{name:"المدثر",start:578,end:580},
+75:{name:"القيامة",start:580,end:581},
+76:{name:"الإنسان",start:581,end:583},
+77:{name:"المرسلات",start:583,end:584},
+78:{name:"النبأ",start:585,end:586},
+79:{name:"النازعات",start:586,end:587},
+80:{name:"عبس",start:588,end:589},
+81:{name:"التكوير",start:589,end:589},
+82:{name:"الانفطار",start:590,end:590},
+83:{name:"المطففين",start:590,end:592},
+84:{name:"الانشقاق",start:592,end:593},
+85:{name:"البروج",start:593,end:593},
+86:{name:"الطارق",start:594,end:594},
+87:{name:"الأعلى",start:594,end:595},
+88:{name:"الغاشية",start:595,end:596},
+89:{name:"الفجر",start:596,end:597},
+90:{name:"البلد",start:597,end:598},
+91:{name:"الشمس",start:598,end:598},
+92:{name:"الليل",start:598,end:599},
+93:{name:"الضحى",start:599,end:599},
+94:{name:"الشرح",start:599,end:600},
+95:{name:"التين",start:600,end:600},
+96:{name:"العلق",start:600,end:601},
+97:{name:"القدر",start:601,end:601},
+98:{name:"البينة",start:601,end:602},
+99:{name:"الزلزلة",start:602,end:602},
+100:{name:"العاديات",start:602,end:603},
+101:{name:"القارعة",start:603,end:603},
+102:{name:"التكاثر",start:603,end:603},
+103:{name:"العصر",start:604,end:604},
+104:{name:"الهمزة",start:604,end:604},
+105:{name:"الفيل",start:604,end:604},
+106:{name:"قريش",start:605,end:605},
+107:{name:"الماعون",start:605,end:605},
+108:{name:"الكوثر",start:605,end:605},
+109:{name:"الكافرون",start:606,end:606},
+110:{name:"النصر",start:606,end:606},
+111:{name:"المسد",start:606,end:606},
+112:{name:"الإخلاص",start:607,end:607},
+113:{name:"الفلق",start:607,end:607},
+114:{name:"الناس",start:607,end:607}
+};
+
+/* قراءة ID */
+const urlParams = new URLSearchParams(window.location.search);
+let surahId = parseInt(urlParams.get("id"));
+let surah = surahs[surahId];
+
+if(!surah){
+    alert("السورة غير موجودة");
+}
+
+/* عرض الاسم */
+document.getElementById("surah-name").textContent = surah.name;
+
+/* المتغيرات */
+let pageNum = parseInt(localStorage.getItem("lastPage"+surahId)) || surah.start;
+let imgElement = document.getElementById("page-img");
+
+/* عرض الصفحة */
+function renderPage(num){
+
+    if(num < surah.start) num = surah.start;
+    if(num > surah.end) num = surah.end;
+
+    pageNum = num;
+
+    imgElement.style.opacity = 0;
+
+    let fileName = String(pageNum).padStart(3,'0') + ".jpg";
+    imgElement.src = "../mushaf-images/" + fileName;
+
+    imgElement.onload = () => {
+        imgElement.style.opacity = 1;
+    };
+
+    localStorage.setItem("lastPage"+surahId, pageNum);
+
+    preloadNext();
+}
+
+/* تحميل الصفحة التالية */
+function preloadNext(){
+    if(pageNum < surah.end){
+        let next = new Image();
+        let nextFile = String(pageNum + 1).padStart(3,'0') + ".jpg";
+        next.src = "../mushaf-images/" + nextFile;
+    }
+}
+
+renderPage(pageNum);
+
+/* التالي */
+function nextPage(){
+    if(pageNum < surah.end){
+        renderPage(pageNum + 1);
+    }else{
+        showNextSurah();
+    }
+}
+
+/* السابق */
+function prevPage(){
+    if(pageNum > surah.start){
+        renderPage(pageNum - 1);
+    }
+}
+
+/* سحب */
+let startX = 0;
+
+document.addEventListener("touchstart", e=>{
+    startX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener("touchend", e=>{
+    let endX = e.changedTouches[0].screenX;
+
+    if(endX < startX - 50) nextPage();
+    if(endX > startX + 50) prevPage();
+});
+
+/* الانتقال للسورة التالية */
+function showNextSurah(){
+    let nextId = surahId + 1;
+
+    if(surahs[nextId]){
+        document.getElementById("nextSurahName").textContent =
+        "لقد انتهيت من سورة " + surah.name +
+        " - الانتقال إلى سورة " + surahs[nextId].name;
+
+        document.getElementById("finishBox").classList.add("active");
+    
+    }
+}
+
+
+function goNextSurah(){
+    window.location.href = "view-kamel.html?id=" + (surahId + 1);
+}
+
+/* الوضع الليلي */
+function toggleMode(){
+    document.body.classList.toggle("dark");
+    document.body.classList.toggle("light");
+}
+
+/* رجوع */
+function goBack(){
+    window.history.back();
+}
+//التنقل 
+function renderPage(num){
+
+    if(num < surah.start) num = surah.start;
+    if(num > surah.end) num = surah.end;
+
+    pageNum = num;
+
+    imgElement.style.opacity = 0;
+
+    let fileName = String(pageNum).padStart(3,'0') + ".jpg";
+    imgElement.src = "../mushaf-images/" + fileName;
+
+    imgElement.onload = () => {
+
+        imgElement.style.opacity = 1;
+
+        updatePageBox();
+        updateProgress();
+    };
+
+    localStorage.setItem("lastPage"+surahId, pageNum);
+
+    preloadNext();
+}
+function updatePageBox(){
+
+    document.getElementById("pageInput").value = pageNum;
+    document.getElementById("totalPages").textContent =
+    "/" + surah.end;
+}function updateProgress(){
+
+    let total = surah.end - surah.start + 1;
+    let current = pageNum - surah.start + 1;
+
+    let percent = (current / total) * 100;
+
+    document.getElementById("progressBar").style.width =
+    percent + "%";
+}
+document.getElementById("pageInput")
+.addEventListener("keydown", function(e){
+
+    if(e.key === "Enter"){
+        let value = parseInt(this.value);
+        if(!isNaN(value)){
+            renderPage(value);
+        }
+    }
+});
+
+</script>
+</body>
+</html>
