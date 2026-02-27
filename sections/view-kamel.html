@@ -455,17 +455,19 @@ function prevPage(){
 /* سحب */
 let startX = 0;
 
-document.addEventListener("touchstart", e=>{
+document.addEventListener("touchstart", e => {
     startX = e.changedTouches[0].screenX;
 });
 
-document.addEventListener("touchend", e=>{
+document.addEventListener("touchend", e => {
     let endX = e.changedTouches[0].screenX;
 
-    if(endX < startX - 50) nextPage();
-    if(endX > startX + 50) prevPage();
-});
+    // سحب لليسار → الصفحة السابقة
+    if (endX < startX - 50) prevPage();
 
+    // سحب لليمين → الصفحة التالية
+    if (endX > startX + 50) nextPage();
+});
 /* الانتقال للسورة التالية */
 function showNextSurah(){
     let nextId = surahId + 1;
@@ -550,3 +552,4 @@ document.getElementById("pageInput")
 </body>
 
 </html>
+
