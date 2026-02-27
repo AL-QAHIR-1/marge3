@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أرباع القرآن - مرجع الأزهري</title>
+<link rel="icon" href="../images/logo.png" type="image/png">
+
+<style>
+:root {
+    --bg-color: #f9f9f9;
+    --text-color: #0f2c59;
+    --card-bg: rgba(230,232,243,0.6);
+    --btn-bg: #0f2c59;
+    --btn-saved: rgb(175,96,6);
+    --progress-bg: #ddd;
+    --progress-fill: linear-gradient(90deg,#0f2c59,#af6006);
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    margin:0; padding:0;
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: 0.3s;
+}
+
+.section-title { text-align:center; font-family:"Amiri", serif; font-size:30px; margin-bottom:40px; }
+.surah-list { max-width:700px; margin:auto; }
+.surah-item {
+    background: var(--card-bg); padding:20px; margin-bottom:20px; border-radius:18px;
+    display:flex; align-items:center; justify-content:space-between; flex-direction:row; box-shadow:0 8px 20px rgba(0,0,0,0.32);
+    border:1px solid #eee; border-right:dashed; direction:rtl;
+}
+.surah-item span, .surah-name { font-size:18px; font-weight:600; text-decoration:none; color:var(--text-color); transition:0.3s; }
+.surah-name:hover { color:#d4af37; }
+.surah-item button {
+    background: var(--btn-bg); color:white; border:none; padding:8px 18px; border-radius:20px; cursor:pointer; transition:0.3s; font-family:system-ui;
+}
+.surah-item button.saved { background: var(--btn-saved); color:white; }
+.progress-box { margin:20px 0; }
+.progress-info { display:flex; justify-content:space-between; margin-bottom:6px; font-weight:bold; }
+.progress-bar { width:100%; height:12px; background: var(--progress-bg); border-radius:20px; overflow:hidden; }
+.progress-fill { height:100%; width:0%; background: var(--progress-fill); transition:0.4s; }
+
+body.dark-mode .main-header {
+    background: linear-gradient(179deg, #773e2c, #712811);
+    border: solid #000000 5px;
+        padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#mode-toggle {
+    font-size: 24px;          /* حجم الأيقونة */
+    background: transparent;   /* بدون خلفية */
+    border: none;              /* بدون حدود */
+    cursor: pointer;
+    transition: transform 0.3s, color 0.3s; /* تأثير حركة ولون */
+}
+
+/* عند التحويم على الأيقونة */
+#mode-toggle:hover {
+    transform: rotate(20deg);  /* دوران بسيط عند المرور */
+    color: #ffd700;             /* لون ذهبي عند المرور */
+}
+
+/* أيقونة القمر في الوضع الليلي */
+body.dark-mode #mode-toggle {
+    color: #f0e68c; /* لون القمر فاتح */
+    text-shadow: 0 0 5px #fff; /* توهج خفيف للقمر */
+}
+
+/* أيقونة الشمس في النهاري */
+body:not(.dark-mode) #mode-toggle {
+    color: #ffdd00; /* لون الشمس أصفر */
+    text-shadow: 0 0 3px #fffa8c; /* توهج خفيف للشمس */
+}
+body.dark-mode .back-btn {
+    background: rgb(175, 96, 6);
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    font-family: inherit;
+
+}
+.back-btn {
+    background: rgb(6, 78, 211);
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    font-family: inherit;
+
+}
+
+.main-header {
+    background: linear-gradient(3deg, #061731, #10449d);
+    border-radius: 10px;
+    color: white;
+        padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+ 
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    width: 49px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+
+.main-header h1 {
+  font-family: "Amiri", serif;
+    font-size: 21px;
+    margin: 0;
+    letter-spacing: 1px;
+
+}
+body.dark-mode {
+    background-color: #ffd58f;
+    color: #000000;
+}
+body {
+    font-family: 'Cairo', sans-serif;
+    background: #f3f6fb;
+    margin: 0;
+    direction: rtl;
+}
+
+
+.juz-section {
+    padding: 25px;
+    border-bottom: 1px solid #ddd;
+}
+
+.juz-title {
+    font-size: 25px;
+    border: solid;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 19px;
+}
+
+.dark-mode .juz-title {
+color: #492c07;
+    font-size: 25px;
+    border: solid;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 19px;
+}
+
+.progress-container {
+    height: 12px;
+    background: #e0e0e0;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #4CAF50, #152206);
+    transition: 0.3s;
+}
+
+.arba3-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 25px;
+}
+
+.ruba3 {
+    background: white;
+    border: 2px solid #0d6efd;
+    display: flex;
+    border-radius: 24px;
+    padding: 16px 12px;
+    text-align: center;
+    font-size: 23px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #060236;
+    position: relative;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+    transition: 0.4s ease;
+    overflow: hidden;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 11px;
+}
+
+
+
+
+body.dark-mode .ruba3 {
+    background-color: #270e04;
+    border: solid #ff7300 3px;
+}
+
+.dark-mode .ruba3 {
+    background: white;
+    display: flex;
+    border-radius: 24px;
+    padding: 16px 12px;
+    text-align: center;
+    font-size: 23px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #ffffff;
+    position: relative;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+    transition: 0.4s ease;
+    overflow: hidden;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 11px;
+}
+
+
+.dark-mode .ruba3.saved {
+    background: #d6f3b5;
+    border-color: #215323;
+        color: rgb(0, 0, 0);
+
+}
+
+.dark-mode .ruba3.saved .save-btn {
+    background: rgb(4 62 8);
+
+}
+.ruba3:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+
+.ruba3.saved {
+    background: #d6f3b5;
+    border-color: #215323;
+}
+
+.ruba3.saved .save-btn {
+    background: rgb(4 62 8);
+    color: white;
+
+}
+.dark-mode .save-btn {
+    margin-top: 10px;
+    padding: 6px 12px;
+    border: none;
+    background: #a67235;
+    color: #ffffff;
+    border-radius: 6px;
+    font-family: system-ui;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+
+}
+.save-btn {
+    margin-top: 10px;
+    padding: 6px 12px;
+    border: none;
+    background: #0d6efd;
+    color: white;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.save-btn:hover {
+    background: #084dbf;
+}
+.dark-mode .save-btn:hover {
+    background: #f0d477;
+    color: black;
+}
+.title-h1{
+    text-align: center;
+}
+</style>
+</head>
+<body>
+
+<header class="main-header">
+<div>
+    <button class="back-btn" onclick="goBack()">
+        <span style='font-size:16px;'>&#8658;</span>
+    </button>
+        <button id="mode-toggle">🌙</button>
+         </div>
+    <h1>مَرجِع الأَزّهَرِي</h1>
+    
+    <div class="logo-title">
+        <img src="../images/logo.png" alt="logo" class="logo">
+    </div>
+
+</header>
+
+
+
+<header >
+    <h1 class="title-h1">الأرباع الكاملة</h1>
+</header>
+
+<!-- الجزء الأول -->
+<section class="juz-section" id="juz-1">
+    <h2 class="juz-title">الجزء الاول</h2>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-1"></div>
+    </div>
+
+    <div class="arba3-container">
+        <div class="ruba3" id="j1-r1" data-storage="juz1-r1"><span>بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j1-r2" data-storage="juz1-r2"><span> إِنَّ ٱللَّهَ لَا يَسۡتَحۡيِۦٓ أَن يَضۡرِبَ مَثَلٗا</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j1-r3" data-storage="juz1-r3"><span> أَتَأۡمُرُونَ ٱلنَّاسَ بِٱلۡبِرِّ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j1-r4" data-storage="juz1-r4"><span> وَإِذِ ٱسۡتَسۡقَىٰ مُوسَىٰ لِقَوۡمِهِۦ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j1-r5" data-storage="juz1-r5"><span> أَفَتَطۡمَعُونَ أَن يُؤۡمِنُواْ لَكُمۡ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j1-r6" data-storage="juz1-r6"><span> وَلَقَدۡ جَآءَكُم مُّوسَىٰ بِٱلۡبَيِّنَٰتِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j1-r7" data-storage="juz1-r7"><span> مَا نَنسَخۡ مِنۡ ءَايَةٍ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j1-r8" data-storage="juz1-r8"><span> وَإِذِ ٱبۡتَلَىٰٓ إِبۡرَٰهِـۧمَ رَبُّهُۥ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+
+<!-- الجزء الثاني -->
+<section class="juz-section" id="juz-2">
+    <h2 class="juz-title">الجزء الثاني</h2>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-2"></div>
+    </div>
+
+    <div class="arba3-container">
+        <div class="ruba3" id="j2-r1" data-storage="juz2-r1"><span>سَيَقُولُ ٱلسُّفَهَآءُ مِنَ ٱلنَّاسِ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j2-r2" data-storage="juz2-r2"><span>إِنَّ ٱلصَّفَا وَٱلۡمَرۡوَةَ مِن شَعَآئِرِ ٱللَّهِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j2-r3" data-storage="juz2-r3"><span>لَّيۡسَ ٱلۡبِرَّ أَن تُوَلُّواْ وُجُوهَكُمۡ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j2-r4" data-storage="juz2-r4"><span>يَسۡـَٔلُونَكَ عَنِ ٱلۡأَهِلَّةِۖ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j2-r5" data-storage="juz2-r5"><span>وَٱذۡكُرُواْ ٱللَّهَ فِيٓ أَيَّامٖ مَّعۡدُودَٰتٖۚ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j2-r6" data-storage="juz2-r6"><span>يَسۡـَٔلُونَكَ عَنِ ٱلۡخَمۡرِ وَٱلۡمَيۡسِرِۖ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j2-r7" data-storage="juz2-r7"><span>وَٱلۡوَٰلِدَٰتُ يُرۡضِعۡنَ أَوۡلَٰدَهُنَّ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j2-r8" data-storage="juz2-r8"><span> أَلَمۡ تَرَ إِلَى ٱلَّذِينَ خَرَجُواْ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+<section class="juz-section" id="juz-3">
+    <h2 class="juz-title">الجزء الثالث</h2>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-3"></div>
+    </div>
+
+    <div class="arba3-container">
+        <div class="ruba3" id="j3-r1" data-storage="juz3-r1"><span>تِلۡكَ ٱلرُّسُلُ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j3-r2" data-storage="juz3-r2"><span> قَوۡلٞ مَّعۡرُوفٞ وَمَغۡفِرَةٌ خَيۡرٞ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j3-r3" data-storage="juz3-r3"><span>لَّيۡسَ عَلَيۡكَ هُدَىٰهُمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j3-r4" data-storage="juz3-r4"><span>وَإِن كُنتُمۡ عَلَىٰ سَفَرٖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j3-r5" data-storage="juz3-r5"><span>قُلۡ أَؤُنَبِّئُكُم بِخَيۡرٖ مِّن ذَٰلِكُمۡۖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j3-r6" data-storage="juz3-r6"><span>إِنَّ ٱللَّهَ ٱصۡطَفَىٰٓ ءَادَمَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j3-r7" data-storage="juz3-r7"><span>فَلَمَّآ أَحَسَّ عِيسَىٰ مِنۡهُمُ ٱلۡكُفۡرَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j3-r8" data-storage="juz3-r8"><span>وَمِنۡ أَهۡلِ ٱلۡكِتَٰبِ مَنۡ إِن تَأۡمَنۡهُ </span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+<!-- الجزء الرابع -->
+<section class="juz-section" id="juz-4">
+    <h2 class="juz-title">الجزء الرابع</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-4"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j4-r1" data-storage="juz4-r1"><span>كُلُّ ٱلطَّعَامِ كَانَ حِلّٗا </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j4-r2" data-storage="juz4-r2"><span>لَيۡسُواْ سَوَآءٗۗ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j4-r3" data-storage="juz4-r3"><span>وَسَارِعُوٓاْ إِلَىٰ مَغۡفِرَةٖ مِّن رَّبِّكُمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j4-r4" data-storage="juz4-r4"><span>إِذۡ تُصۡعِدُونَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j4-r5" data-storage="juz4-r5"><span>يَسۡتَبۡشِرُونَ بِنِعۡمَةٖ مِّنَ ٱللَّهِ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j4-r6" data-storage="juz4-r6"><span>تُبۡلَوُنَّ فِيٓ أَمۡوَٰلِكُمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j4-r7" data-storage="juz4-r7"><span>يَٰٓأَيُّهَا ٱلنَّاسُ ٱتَّقُواْ رَبَّكُمُ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j4-r8" data-storage="juz4-r8"><span>وَلَكُمۡ نِصۡفُ مَا تَرَكَ أَزۡوَٰجُكُمۡ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الخامس -->
+<section class="juz-section" id="juz-5">
+    <h2 class="juz-title">الجزء الخامس</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-5"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j5-r1" data-storage="juz5-r1"><span>وَٱلۡمُحۡصَنَٰتُ مِنَ ٱلنِّسَآءِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j5-r2" data-storage="juz5-r2"><span>وَٱعۡبُدُواْ ٱللَّهَ وَلَا تُشۡرِكُواْ بِهِۦ شَيۡـٔٗاۖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j5-r3" data-storage="juz5-r3"><span>إِنَّ ٱللَّهَ يَأۡمُرُكُمۡ أَن تُؤَدُّواْ ٱلۡأَمَٰنَٰتِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j5-r4" data-storage="juz5-r4"><span>فَلۡيُقَٰتِلۡ فِي سَبِيلِ ٱللَّهِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j5-r5" data-storage="juz5-r5"><span>فَمَا لَكُمۡ فِي ٱلۡمُنَٰفِقِينَ فِئَتَيۡنِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j5-r6" data-storage="juz5-r6"><span>وَمَن يُهَاجِرۡ فِي سَبِيلِ ٱللَّهِ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j5-r7" data-storage="juz5-r7"><span>لَّا خَيۡرَ فِي كَثِيرٖ مِّن نَّجۡوَىٰهُمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j5-r8" data-storage="juz5-r8"><span>يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ كُونُواْ قَوَّٰمِينَ بِٱلۡقِسۡطِ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+<!-- الجزء السادس -->
+<section class="juz-section" id="juz-6">
+    <h2 class="juz-title">الجزء السادس</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-6"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j6-r1" data-storage="juz6-r1"><span>لَّا يُحِبُّ ٱللَّهُ ٱلۡجَهۡرَ بِٱلسُّوٓءِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j6-r2" data-storage="juz6-r2"><span>إِنَّآ أَوۡحَيۡنَآ إِلَيۡكَ كَمَآ أَوۡحَيۡنَآ إِلَىٰ نُوحٖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j6-r3" data-storage="juz6-r3"><span>يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓاْ أَوۡفُواْ بِٱلۡعُقُودِۚ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j6-r4" data-storage="juz6-r4"><span>وَلَقَدۡ أَخَذَ ٱللَّهُ مِيثَٰقَ بَنِيٓ إِسۡرَٰٓءِيلَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j6-r5" data-storage="juz6-r5"><span>وَٱتۡلُ عَلَيۡهِمۡ نَبَأَ ٱبۡنَيۡ ءَادَمَ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j6-r6" data-storage="juz6-r6"><span>يَٰٓأَيُّهَا ٱلرَّسُولُ لَا يَحۡزُنكَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j6-r7" data-storage="juz6-r7"><span>يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ لَا تَتَّخِذُواْ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j6-r8" data-storage="juz6-r8"><span>يَٰٓأَيُّهَا ٱلرَّسُولُ بَلِّغۡ مَآ أُنزِلَ إِلَيۡكَ </span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء السابع -->
+<section class="juz-section" id="juz-7">
+    <h2 class="juz-title">الجزء السابع</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-7"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j7-r1" data-storage="juz7-r1"><span>لَتَجِدَنَّ أَشَدَّ ٱلنَّاسِ عَدَٰوَةٗ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j7-r2" data-storage="juz7-r2"><span>جَعَلَ ٱللَّهُ ٱلۡكَعۡبَةَ ٱلۡبَيۡتَ ٱلۡحَرَامَ قِيَٰمٗا</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j7-r3" data-storage="juz7-r3"><span>يَوۡمَ يَجۡمَعُ ٱللَّهُ ٱلرُّسُلَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j7-r4" data-storage="juz7-r4"><span>وَلَهُۥ مَا سَكَنَ فِي ٱلَّيۡلِ وَٱلنَّهَارِۚ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j7-r5" data-storage="juz7-r5"><span>إِنَّمَا يَسۡتَجِيبُ ٱلَّذِينَ يَسۡمَعُونَۘ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j7-r6" data-storage="juz7-r6"><span>وَعِندَهُۥ مَفَاتِحُ ٱلۡغَيۡبِ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j7-r7" data-storage="juz7-r7"><span>وَإِذۡ قَالَ إِبۡرَٰهِيمُ لِأَبِيهِ ءَازَرَ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j7-r8" data-storage="juz7-r8"><span>إِنَّ ٱللَّهَ فَالِقُ ٱلۡحَبِّ وَٱلنَّوَىٰۖ </span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+<!-- الجزء الثامن -->
+<section class="juz-section" id="juz-8">
+    <h2 class="juz-title">الجزء الثامن</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-8"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j8-r1" data-storage="juz8-r1"><span>وَلَوۡ أَنَّنَا نَزَّلۡنَآ إِلَيۡهِمُ ٱلۡمَلَٰٓئِكَةَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j8-r2" data-storage="juz8-r2"><span>لَهُمۡ دَارُ ٱلسَّلَٰمِ عِندَ رَبِّهِمۡۖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j8-r3" data-storage="juz8-r3"><span>وَهُوَ ٱلَّذِيٓ أَنشَأَ جَنَّٰتٖ مَّعۡرُوشَٰتٖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j8-r4" data-storage="juz8-r4"><span>قُلۡ تَعَالَوۡاْ أَتۡلُ مَا حَرَّمَ رَبُّكُمۡ عَلَيۡكُمۡۖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j8-r5" data-storage="juz8-r5"><span>الٓمٓصٓ (الاعراف)</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j8-r6" data-storage="juz8-r6"><span>يَٰبَنِيٓ ءَادَمَ خُذُواْ زِينَتَكُمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j8-r7" data-storage="juz8-r7"><span>وَإِذَا صُرِفَتۡ أَبۡصَٰرُهُمۡ تِلۡقَآءَ أَصۡحَٰبِ ٱلنَّارِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j8-r8" data-storage="juz8-r8"><span>وَإِلَىٰ عَادٍ أَخَاهُمۡ هُودٗاۚ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+<!-- الجزء التاسع -->
+<section class="juz-section" id="juz-9">
+    <h2 class="juz-title">الجزء التاسع</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-9"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j9-r1" data-storage="juz9-r1"><span>قَالَ ٱلۡمَلَأُ ٱلَّذِينَ ٱسۡتَكۡبَرُواْ مِن قَوۡمِهِۦ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j9-r2" data-storage="juz9-r2"><span>وَأَوۡحَيۡنَآ إِلَىٰ مُوسَىٰٓ أَنۡ أَلۡقِ عَصَاكَۖ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j9-r3" data-storage="juz9-r3"><span>وَوَٰعَدۡنَا مُوسَىٰ ثَلَٰثِينَ لَيۡلَةٗ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j9-r4" data-storage="juz9-r4"><span>وَٱكۡتُبۡ لَنَا فِي هَٰذِهِ ٱلدُّنۡيَا حَسَنَةٗ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j9-r5" data-storage="juz9-r5"><span>وَإِذۡ نَتَقۡنَا ٱلۡجَبَلَ فَوۡقَهُمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j9-r6" data-storage="juz9-r6"><span>هُوَ ٱلَّذِي خَلَقَكُم مِّن نَّفۡسٖ وَٰحِدَةٖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j9-r7" data-storage="juz9-r7"><span>يَسۡـَٔلُونَكَ عَنِ ٱلۡأَنفَالِۖ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j9-r8" data-storage="juz9-r8"><span>إِنَّ شَرَّ ٱلدَّوَآبِّ </span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء العاشر -->
+<section class="juz-section" id="juz-10">
+    <h2 class="juz-title">الجزء العاشر</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-10"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j10-r1" data-storage="juz10-r1"><span>وَٱعۡلَمُوٓاْ أَنَّمَا غَنِمۡتُم مِّن شَيۡءٖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j10-r2" data-storage="juz10-r2"><span>وَإِن جَنَحُواْ لِلسَّلۡمِ فَٱجۡنَحۡ لَهَا </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j10-r3" data-storage="juz10-r3"><span>بَرَآءَةٞ مِّنَ ٱللَّهِ وَرَسُولِهِۦٓ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j10-r4" data-storage="juz10-r4"><span>أَجَعَلۡتُمۡ سِقَايَةَ ٱلۡحَآجِّ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j10-r5" data-storage="juz10-r5"><span>يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓاْ إِنَّ كَثِيرٗا مِّنَ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j10-r6" data-storage="juz10-r6"><span>وَلَوۡ أَرَادُواْ ٱلۡخُرُوجَ لَأَعَدُّواْ لَهُۥ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j10-r7" data-storage="juz10-r7"><span>إِنَّمَا ٱلصَّدَقَٰتُ لِلۡفُقَرَآءِ وَٱلۡمَسَٰكِينِ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j10-r8" data-storage="juz10-r8"><span>وَمِنۡهُم مَّنۡ عَٰهَدَ ٱللَّهَ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+<!-- الجزء الحادي عشر -->
+<section class="juz-section" id="juz-11">
+    <h2 class="juz-title">الجزء الحادي عشر</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-11"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j11-r1" data-storage="juz11-r1"><span>إِنَّمَا ٱلسَّبِيلُ عَلَى ٱلَّذِينَ يَسۡتَـٔۡذِنُونَكَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j11-r2" data-storage="juz11-r2"><span>إِنَّ ٱللَّهَ ٱشۡتَرَىٰ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j11-r3" data-storage="juz11-r3"><span>وَمَا كَانَ ٱلۡمُؤۡمِنُونَ لِيَنفِرُواْ كَآفَّةٗۚ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j11-r4" data-storage="juz11-r4"><span>وَلَوۡ يُعَجِّلُ ٱللَّهُ لِلنَّاسِ ٱلشَّرَّ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j11-r5" data-storage="juz11-r5"><span>لِّلَّذِينَ أَحۡسَنُواْ ٱلۡحُسۡنَىٰ وَزِيَادَةٞۖ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j11-r6" data-storage="juz11-r6"><span>وَيَسۡتَنۢبِـُٔونَكَ أَحَقٌّ هُوَۖ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j11-r7" data-storage="juz11-r7"><span>وَٱتۡلُ عَلَيۡهِمۡ نَبَأَ نُوحٍ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j11-r8" data-storage="juz11-r8"><span>وَجَٰوَزۡنَا بِبَنِيٓ إِسۡرَٰٓءِيلَ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الثاني عشر -->
+<section class="juz-section" id="juz-12">
+    <h2 class="juz-title">الجزء الثاني عشر</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-12"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j12-r1" data-storage="juz12-r1"><span>وَمَا مِن دَآبَّةٖ فِي ٱلۡأَرۡضِ َ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j12-r2" data-storage="juz12-r2"><span>مَثَلُ ٱلۡفَرِيقَيۡنِ كَٱلۡأَعۡمَىٰ وَٱلۡأَصَمِّ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j12-r3" data-storage="juz12-r3"><span>وَقَالَ ٱرۡكَبُواْ فِيهَا</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j12-r4" data-storage="juz12-r4"><span>وَقَالَ ٱرۡكَبُواْ فِيهَا</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j12-r5" data-storage="juz12-r5"><span>وَإِلَىٰ مَدۡيَنَ أَخَاهُمۡ شُعَيۡبٗاۚ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j12-r6" data-storage="juz12-r6"><span>وَأَمَّا ٱلَّذِينَ سُعِدُواْ فَفِي ٱلۡجَنَّةِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j12-r7" data-storage="juz12-r7"><span>لَّقَدۡ كَانَ فِي يُوسُفَ وَإِخۡوَتِهِۦٓ ءَايَٰتٞ لِّلسَّآئِلِينَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j12-r8" data-storage="juz12-r8"><span>وَقَالَ نِسْوَةٌ فِي الْمَدِينَةِ </span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الثالث عشر -->
+<section class="juz-section" id="juz-13">
+    <h2 class="juz-title">الجزء الثالث عشر</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-13"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j13-r1" data-storage="juz13-r1"><span>وَمَآ أُبَرِّئُ نَفۡسِيٓۚ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j13-r2" data-storage="juz13-r2"><span>قَالُوٓاْ إِن يَسۡرِقۡ فَقَدۡ سَرَقَ أَخٞ لَّهُۥ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j13-r3" data-storage="juz13-r3"><span>رَبِّ قَدۡ ءَاتَيۡتَنِي مِنَ ٱلۡمُلۡكِ وَعَلَّمۡتَنِي</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j13-r4" data-storage="juz13-r4"><span>وَإِن تَعۡجَبۡ فَعَجَبٞ قَوۡلُهُمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j13-r5" data-storage="juz13-r5"><span>أَفَمَن يَعۡلَمُ أَنَّمَآ أُنزِلَ إِلَيۡكَ مِن رَّبِّكَ ٱلۡحَقُّ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j13-r6" data-storage="juz13-r6"><span>مَّثَلُ ٱلۡجَنَّةِ ٱلَّتِي وُعِدَ ٱلۡمُتَّقُونَۖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j13-r7" data-storage="juz13-r7"><span>قَالَتۡ رُسُلُهُمۡ أَفِي ٱللَّهِ شَكّٞ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j13-r8" data-storage="juz13-r8"><span>أَلَمۡ تَرَ إِلَى ٱلَّذِينَ بَدَّلُواْ نِعۡمَتَ ٱللَّهِ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الرابع عشر -->
+<section class="juz-section" id="juz-14">
+    <h2 class="juz-title">الجزء الرابع عشر</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-14"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j14-r1" data-storage="juz14-r1"><span>الٓرۚ تِلۡكَ ءَايَٰتُ ٱلۡكِتَٰبِ  (الحجر)</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j14-r2" data-storage="juz14-r2"><span>نَبِّئۡ عِبَادِيٓ أَنِّيٓ أَنَا ٱلۡغَفُورُ ٱلرَّحِيمُ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j14-r3" data-storage="juz14-r3"><span>أَتَىٰٓ أَمۡرُ ٱللَّهِ فَلَا تَسۡتَعۡجِلُوهُۚ (النحل)</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j14-r4" data-storage="juz14-r4"><span>وَقِيلَ لِلَّذِينَ ٱتَّقَوۡاْ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j14-r5" data-storage="juz14-r5"><span>وَقَالَ ٱللَّهُ لَا تَتَّخِذُوٓاْ إِلَٰهَيۡنِ ٱثۡنَيۡنِۖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j14-r6" data-storage="juz14-r6"><span>ضَرَبَ ٱللَّهُ مَثَلًا عَبۡدٗا </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j14-r7" data-storage="juz14-r7"><span>إِنَّ ٱللَّهَ يَأۡمُرُ بِٱلۡعَدۡلِ وَٱلۡإِحۡسَٰنِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j14-r8" data-storage="juz14-r8"><span>يَوۡمَ تَأۡتِي كُلُّ نَفۡسٖ تُجَٰدِلُ عَن نَّفۡسِهَا </span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الخامس عشر -->
+<section class="juz-section" id="juz-15">
+    <h2 class="juz-title">الجزء الخامس عشر</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-15"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j15-r1" data-storage="juz15-r1"><span>سُبۡحَٰنَ ٱلَّذِيٓ أَسۡرَىٰ بِعَبۡدِهِۦ لَيۡلٗا</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j15-r2" data-storage="juz15-r2"><span>وَقَضَىٰ رَبُّكَ أَلَّا تَعۡبُدُوٓاْ إِلَّآ إِيَّاهُ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j15-r3" data-storage="juz15-r3"><span>قُلۡ كُونُواْ حِجَارَةً أَوۡ حَدِيدًا</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j15-r4" data-storage="juz15-r4"><span>وَلَقَدۡ كَرَّمۡنَا بَنِيٓ ءَادَمَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j15-r5" data-storage="juz15-r5"><span>أَوَلَمۡ يَرَوۡاْ أَنَّ ٱللَّهَ ٱلَّذِي</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j15-r6" data-storage="juz15-r6"><span>وَتَرَى ٱلشَّمۡسَ إِذَا طَلَعَت تَّزَٰوَرُ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j15-r7" data-storage="juz15-r7"><span>وَٱضۡرِبۡ لَهُم مَّثَلٗا رَّجُلَيۡنِ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j15-r8" data-storage="juz15-r8"><span>مَّآ أَشۡهَدتُّهُمۡ خَلۡقَ ٱلسَّمَٰوَٰتِ وَٱلۡأَرۡضِ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+<!-- الجزء السادس عشر -->
+<section class="juz-section" id="juz-16">
+    <h2 class="juz-title">الجزء السادس عشر</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-16"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j16-r1" data-storage="juz16-r1"><span>قَالَ أَلَمۡ أَقُل لَّكَ إِنَّكَ لَن </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j16-r2" data-storage="juz16-r2"><span>وَتَرَكۡنَا بَعۡضَهُمۡ يَوۡمَئِذٖ يَمُوجُ فِي بَعۡضٖۖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j16-r3" data-storage="juz16-r3"><span>حَمَلَتۡهُ فَٱنتَبَذَتۡ بِهِۦ مَكَانٗا قَصِيّٗا</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j16-r4" data-storage="juz16-r4"><span>فَخَلَفَ مِنۢ بَعۡدِهِمۡ خَلۡفٌ أَضَاعُواْ ٱلصَّلَوٰة</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j16-r5" data-storage="juz16-r5"><span>طه </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j16-r6" data-storage="juz16-r6"><span>مِنۡهَا خَلَقۡنَٰكُمۡ وَفِيهَا نُعِيدُكُمۡ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j16-r7" data-storage="juz16-r7"><span>وَمَآ أَعۡجَلَكَ عَن قَوۡمِكَ يَٰمُوسَىٰ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j16-r8" data-storage="juz16-r8"><span>وَعَنَتِ ٱلۡوُجُوهُ لِلۡحَيِّ ٱلۡقَيُّومِۖ </span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء السابع عشر -->
+<section class="juz-section" id="juz-17">
+    <h2 class="juz-title">الجزء السابع عشر</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-17"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j17-r1" data-storage="juz17-r1"><span>ٱقۡتَرَبَ لِلنَّاسِ حِسَابُهُمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j17-r2" data-storage="juz17-r2"><span>وَمَن يَقُلۡ مِنۡهُمۡ إِنِّيٓ إِلَٰهٞ مِّن دُونِهِۦ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j17-r3" data-storage="juz17-r3"><span>وَلَقَدۡ ءَاتَيۡنَآ إِبۡرَٰهِيمَ رُشۡدَهُۥ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j17-r4" data-storage="juz17-r4"><span>وَأَيُّوبَ إِذۡ نَادَىٰ رَبَّهُۥٓ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j17-r5" data-storage="juz17-r5"><span>يَٰٓأَيُّهَا ٱلنَّاسُ ٱتَّقُواْ رَبَّكُمۡۚ (الحج)</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j17-r6" data-storage="juz17-r6"><span>هَٰذَانِ خَصۡمَانِ ٱخۡتَصَمُواْ فِي رَبِّهِمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j17-r7" data-storage="juz17-r7"><span>إِنَّ ٱللَّهَ يُدَٰفِعُ عَنِ ٱلَّذِينَ ءَامَنُوٓاْۗ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j17-r8" data-storage="juz17-r8"><span>ذَٰلِكَۖ وَمَنۡ عَاقَبَ بِمِثۡلِ مَا عُوقِبَ بِهِ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الثامن عشر -->
+<section class="juz-section" id="juz-18">
+    <h2 class="juz-title">الجزء الثامن عشر</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-18"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j18-r1" data-storage="juz18-r1"><span>قَدۡ أَفۡلَحَ ٱلۡمُؤۡمِنُونَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j18-r2" data-storage="juz18-r2"><span>يۡهَاتَ هَيۡهَاتَ لِمَا تُوعَدُونَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j18-r3" data-storage="juz18-r3"><span>وَلَوۡ رَحِمۡنَٰهُمۡ وَكَشَفۡنَا مَا بِهِم مِّن ضُرّٖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j18-r4" data-storage="juz18-r4"><span>سُورَةٌ أَنزَلۡنَٰهَا وَفَرَضۡنَٰهَا</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j18-r5" data-storage="juz18-r5"><span>يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ لَا تَتَّبِعُواْ خُطُوَٰتِ ٱلشَّيۡطَٰنِۚ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j18-r6" data-storage="juz18-r6"><span>ٱللَّهُ نُورُ ٱلسَّمَٰوَٰتِ وَٱلۡأَرۡضِۚ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j18-r7" data-storage="juz18-r7"><span>وَأَقۡسَمُواْ بِٱللَّهِ جَهۡدَ أَيۡمَٰنِهِمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j18-r8" data-storage="juz18-r8"><span>تَبَارَكَ ٱلَّذِي نَزَّلَ ٱلۡفُرۡقَانَ عَلَىٰ عَبۡدِهِ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء التاسع عشر -->
+<section class="juz-section" id="juz-19">
+    <h2 class="juz-title">الجزء التاسع عشر</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-19"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j19-r1" data-storage="juz19-r1"><span>قَالَ ٱلَّذِينَ لَا يَرۡجُونَ لِقَآءَنَا</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j19-r2" data-storage="juz19-r2"><span>وَهُوَ ٱلَّذِي مَرَجَ ٱلۡبَحۡرَيۡنِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j19-r3" data-storage="juz19-r3"><span>طسٓمٓ (الشعراء)</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j19-r4" data-storage="juz19-r4"><span>وَأَوۡحَيۡنَآ إِلَىٰ مُوسَىٰٓ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j19-r5" data-storage="juz19-r5"><span>قَالُوٓاْ أَنُؤۡمِنُ لَكَ وَٱتَّبَعَكَ ٱلۡأَرۡذَلُونَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j19-r6" data-storage="juz19-r6"><span>أَوۡفُواْ ٱلۡكَيۡلَ وَلَا تَكُونُواْ مِنَ ٱلۡمُخۡسِرِينَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j19-r7" data-storage="juz19-r7"><span>طسٓۚ تِلۡكَ ءَايَٰتُ ٱلۡقُرۡءَانِ وَكِتَابٖ مُّبِينٍ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j19-r8" data-storage="juz19-r8"><span>قَالَ سَنَنظُرُ أَصَدَقۡتَ أَمۡ كُنتَ مِنَ ٱلۡكَٰذِبِينَ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء العشرون -->
+<section class="juz-section" id="juz-20">
+    <h2 class="juz-title">الجزء العشرون</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-20"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j20-r1" data-storage="juz20-r1"><span>فَمَا كَانَ جَوَابَ قَوۡمِهِۦٓ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j20-r2" data-storage="juz20-r2"><span>وَإِذَا وَقَعَ ٱلۡقَوۡلُ عَلَيۡهِمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j20-r3" data-storage="juz20-r3"><span>وَحَرَّمۡنَا عَلَيۡهِ ٱلۡمَرَاضِعَ مِن قَبۡلُ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j20-r4" data-storage="juz20-r4"><span>فَلَمَّا قَضَىٰ مُوسَى ٱلۡأَجَلَ وَسَارَ بِأَهۡلِهِۦٓ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j20-r5" data-storage="juz20-r5"><span>وَلَقَدۡ وَصَّلۡنَا لَهُمُ ٱلۡقَوۡلَ لَعَلَّهُمۡ يَتَذَكَّرُونَ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j20-r6" data-storage="juz20-r6"><span>إِنَّ قَٰرُونَ كَانَ مِن قَوۡمِ مُوسَىٰ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j20-r7" data-storage="juz20-r7"><span>الٓمٓ (العنكبوت)</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j20-r8" data-storage="juz20-r8"><span>فَـَٔامَنَ لَهُۥ لُوطٞۘ وَقَالَ إِنِّي مُهَاجِرٌ إِلَىٰ رَبِّيٓۖ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+<!-- الجزء الحادي والعشرون -->
+<section class="juz-section" id="juz-21">
+    <h2 class="juz-title">الجزء الحادي والعشرون</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-21"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j21-r1" data-storage="juz21-r1"><span>وَلَا تُجَٰدِلُوٓاْ أَهۡلَ ٱلۡكِتَٰبِ إِلَّا بِٱلَّتِي هِيَ أَحۡسَنُ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j21-r2" data-storage="juz21-r2"><span>الٓمٓ (1) غُلِبَتِ ٱلرُّومُ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j21-r3" data-storage="juz21-r3"><span>مُنِيبِينَ إِلَيۡهِ وَٱتَّقُوهُ وَأَقِيمُواْ ٱلصَّلَوٰةَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j21-r4" data-storage="juz21-r4"><span>ٱللَّهُ ٱلَّذِي خَلَقَكُم مِّن ضَعۡفٖ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j21-r5" data-storage="juz21-r5"><span>وَمَن يُسۡلِمۡ وَجۡهَهُۥٓ إِلَى ٱللَّهِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j21-r6" data-storage="juz21-r6"><span>قُلۡ يَتَوَفَّىٰكُم مَّلَكُ ٱلۡمَوۡتِ ٱلَّذِي وُكِّلَ بِكُمۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j21-r7" data-storage="juz21-r7"><span>يَٰٓأَيُّهَا ٱلنَّبِيُّ ٱتَّقِ ٱللَّهَ وَلَا تُطِعِ ٱلۡكَٰفِرِينَ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j21-r8" data-storage="juz21-r8"><span>قَدۡ يَعۡلَمُ ٱللَّهُ ٱلۡمُعَوِّقِينَ مِنكُمۡ </span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الثاني والعشرون -->
+<section class="juz-section" id="juz-22">
+    <h2 class="juz-title">الجزء الثاني والعشرون</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-22"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j22-r1" data-storage="juz22-r1"><span>وَمَن يَقۡنُتۡ مِنكُنَّ لِلَّهِ وَرَسُولِهِۦ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j22-r2" data-storage="juz22-r2"><span>تُرۡجِي مَن تَشَآءُ مِنۡهُنَّ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j22-r3" data-storage="juz22-r3"><span>لَّئِن لَّمۡ يَنتَهِ ٱلۡمُنَٰفِقُونَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j22-r4" data-storage="juz22-r4"><span>وَلَقَدۡ ءَاتَيۡنَا دَاوُۥدَ مِنَّا فَضۡلٗاۖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j22-r5" data-storage="juz22-r5"><span>قُلۡ مَن يَرۡزُقُكُم مِّنَ ٱلسَّمَٰوَٰتِ وَٱلۡأَرۡضِۖ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j22-r6" data-storage="juz22-r6"><span>قُلۡ إِنَّمَآ أَعِظُكُم بِوَٰحِدَةٍۖ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j22-r7" data-storage="juz22-r7"><span>يَٰٓأَيُّهَا ٱلنَّاسُ أَنتُمُ ٱلۡفُقَرَآءُ إِلَى ٱللَّهِۖ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j22-r8" data-storage="juz22-r8"><span>إِنَّ ٱللَّهَ يُمۡسِكُ ٱلسَّمَٰوَٰتِ وَٱلۡأَرۡضَ أَن تَزُولَاۚ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الثالث والعشرون -->
+<section class="juz-section" id="juz-23">
+    <h2 class="juz-title">الجزء الثالث والعشرون</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-23"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j23-r1" data-storage="juz23-r1"><span>وَمَآ أَنزَلۡنَا عَلَىٰ قَوۡمِهِۦ مِنۢ بَعۡدِهِۦ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j23-r2" data-storage="juz23-r2"><span>أَلَمۡ أَعۡهَدۡ إِلَيۡكُمۡ يَٰبَنِيٓ ءَادَمَ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j23-r3" data-storage="juz23-r3"><span>ٱحۡشُرُواْ ٱلَّذِينَ ظَلَمُواْ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j23-r4" data-storage="juz23-r4"><span>وَإِنَّ مِن شِيعَتِهِۦ لَإِبۡرَٰهِيمَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j23-r5" data-storage="juz23-r5"><span>فَنَبَذۡنَٰهُ بِٱلۡعَرَآءِ وَهُوَ سَقِيمٞ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j23-r6" data-storage="juz23-r6"><span>وَهَلۡ أَتَىٰكَ نَبَؤُاْ ٱلۡخَصۡمِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j23-r7" data-storage="juz23-r7"><span>وَعِندَهُمۡ قَٰصِرَٰتُ ٱلطَّرۡفِ أَتۡرَابٌ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j23-r8" data-storage="juz23-r8"><span>وَإِذَا مَسَّ ٱلۡإِنسَٰنَ ضُرّٞ دَعَا رَبَّهُۥ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الرابع والعشرون -->
+<section class="juz-section" id="juz-24">
+    <h2 class="juz-title">الجزء الرابع والعشرون</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-24"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j24-r1" data-storage="juz24-r1"><span>فَمَنۡ أَظۡلَمُ مِمَّن كَذَبَ عَلَى ٱللَّهِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j24-r2" data-storage="juz24-r2"><span>قُلۡ يَٰعِبَادِيَ ٱلَّذِينَ أَسۡرَفُواْ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j24-r3" data-storage="juz24-r3"><span>حمٓ (غافر)</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j24-r4" data-storage="juz24-r4"><span>أَوَلَمۡ يَسِيرُواْ فِي ٱلۡأَرۡضِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j24-r5" data-storage="juz24-r5"><span>وَيَٰقَوۡمِ مَا لِيٓ أَدۡعُوكُمۡ إِلَى ٱلنَّجَوٰةِ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j24-r6" data-storage="juz24-r6"><span>قُلۡ إِنِّي نُهِيتُ أَنۡ أَعۡبُدَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j24-r7" data-storage="juz24-r7"><span>قُلۡ أَئِنَّكُمۡ لَتَكۡفُرُونَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j24-r8" data-storage="juz24-r8"><span>وَقَيَّضۡنَا لَهُمۡ قُرَنَآءَ فَزَيَّنُواْ لَهُم</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الخامس والعشرون -->
+<section class="juz-section" id="juz-25">
+    <h2 class="juz-title">الجزء الخامس والعشرون</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-25"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j25-r1" data-storage="juz25-r1"><span>إِلَيۡهِ يُرَدُّ عِلۡمُ ٱلسَّاعَةِۚ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j25-r2" data-storage="juz25-r2"><span>شَرَعَ لَكُم مِّنَ ٱلدِّينِ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j25-r3" data-storage="juz25-r3"><span>وَلَوۡ بَسَطَ ٱللَّهُ ٱلرِّزۡقَ لِعِبَادِهِۦ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j25-r4" data-storage="juz25-r4"><span>وَمَا كَانَ لِبَشَرٍ أَن يُكَلِّمَهُ ٱللَّهُ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j25-r5" data-storage="juz25-r5"><span>قَٰلَ أَوَلَوۡ جِئۡتُكُم بِأَهۡدَىٰ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j25-r6" data-storage="juz25-r6"><span>وَلَمَّا ضُرِبَ ٱبۡنُ مَرۡيَمَ مَثَلًا </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j25-r7" data-storage="juz25-r7"><span>وَلَقَدۡ فَتَنَّا قَبۡلَهُمۡ قَوۡمَ فِرۡعَوۡنَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j25-r8" data-storage="juz25-r8"><span>ٱللَّهُ ٱلَّذِي سَخَّرَ لَكُمُ ٱلۡبَحۡرَ </span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+<!-- الجزء السادس والعشرون -->
+<section class="juz-section" id="juz-26">
+    <h2 class="juz-title">الجزء السادس والعشرون</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-26"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j26-r1" data-storage="juz26-r1"><span>حمٓ (الاحقاف)</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j26-r2" data-storage="juz26-r2"><span>وَٱذۡكُرۡ أَخَا عَادٍ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j26-r3" data-storage="juz26-r3"><span>أَفَلَمۡ يَسِيرُواْ فِي ٱلۡأَرۡضِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j26-r4" data-storage="juz26-r4"><span>يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓاْ أَطِيعُواْ ٱللَّهَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j26-r5" data-storage="juz26-r5"><span>لَّقَدۡ رَضِيَ ٱللَّهُ عَنِ ٱلۡمُؤۡمِنِينَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j26-r6" data-storage="juz26-r6"><span>يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ لَا تُقَدِّمُواْ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j26-r7" data-storage="juz26-r7"><span>قَالَتِ ٱلۡأَعۡرَابُ ءَامَنَّاۖ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j26-r8" data-storage="juz26-r8"><span>قَالَ قَرِينُهُۥ رَبَّنَا مَآ أَطۡغَيۡتُهُۥ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء السابع والعشرون -->
+<section class="juz-section" id="juz-27">
+    <h2 class="juz-title">الجزء السابع والعشرون</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-27"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j27-r1" data-storage="juz27-r1"><span>قَالَ فَمَا خَطۡبُكُمۡ أَيُّهَا ٱلۡمُرۡسَلُونَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j27-r2" data-storage="juz27-r2"><span>وَيَطُوفُ عَلَيۡهِمۡ غِلۡمَانٞ لَّهُمۡ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j27-r3" data-storage="juz27-r3"><span>وَكَم مِّن مَّلَكٖ فِي ٱلسَّمَٰوَٰتِ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j27-r4" data-storage="juz27-r4"><span>كَذَّبَتۡ قَبۡلَهُمۡ قَوۡمُ نُوحٖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j27-r5" data-storage="juz27-r5"><span>ٱلرَّحۡمَٰنُ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j27-r6" data-storage="juz27-r6"><span>إِذَا وَقَعَتِ ٱلۡوَاقِعَةُ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j27-r7" data-storage="juz27-r7"><span>فَلَآ أُقۡسِمُ بِمَوَٰقِعِ ٱلنُّجُومِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j27-r8" data-storage="juz27-r8"><span>أَلَمۡ يَأۡنِ لِلَّذِينَ ءَامَنُوٓاْ </span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الثامن والعشرون -->
+<section class="juz-section" id="juz-28">
+    <h2 class="juz-title">الجزء الثامن والعشرون</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-28"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j28-r1" data-storage="juz28-r1"><span>قَدۡ سَمِعَ ٱللَّهُ قَوۡلَ ٱلَّتِي تُجَٰدِلُكَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j28-r2" data-storage="juz28-r2"><span>أَلَمۡ تَرَ إِلَى ٱلَّذِينَ تَوَلَّوۡاْ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j28-r3" data-storage="juz28-r3"><span>أَلَمۡ تَرَ إِلَى ٱلَّذِينَ نَافَقُواْ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j28-r4" data-storage="juz28-r4"><span>عَسَى ٱللَّهُ أَن يَجۡعَلَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j28-r5" data-storage="juz28-r5"><span>يُسَبِّحُ لِلَّهِ مَا فِي ٱلسَّمَٰوَٰتِ وَمَا فِي ٱلۡأَرۡضِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j28-r6" data-storage="juz28-r6"><span>وَإِذَا رَأَيۡتَهُمۡ تُعۡجِبُكَ أَجۡسَامُهُمۡۖ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j28-r7" data-storage="juz28-r7"><span>يَٰٓأَيُّهَا ٱلنَّبِيُّ إِذَا طَلَّقۡتُمُ ٱلنِّسَآءَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j28-r8" data-storage="juz28-r8"><span>يَٰٓأَيُّهَا ٱلنَّبِيُّ لِمَ تُحَرِّمُ مَآ أَحَلَّ ٱللَّهُ لَكَۖ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء التاسع والعشرون -->
+<section class="juz-section" id="juz-29">
+    <h2 class="juz-title">الجزء التاسع والعشرون</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-29"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j29-r1" data-storage="juz29-r1"><span>تَبَٰرَكَ ٱلَّذِي بِيَدِهِ ٱلۡمُلۡكُ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j29-r2" data-storage="juz29-r2"><span>نٓۚ وَٱلۡقَلَمِ وَمَا يَسۡطُرُونَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j29-r3" data-storage="juz29-r3"><span>ٱلۡحَآقَّةُ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j29-r4" data-storage="juz29-r4"><span>إِنَّ ٱلۡإِنسَٰنَ خُلِقَ هَلُوعًا</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j29-r5" data-storage="juz29-r5"><span>قُلۡ أُوحِيَ إِلَيَّ أَنَّهُ ٱسۡتَمَعَ نَفَرٞ مِّنَ ٱلۡجِنِّ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j29-r6" data-storage="juz29-r6"><span>إِنَّ رَبَّكَ يَعۡلَمُ أَنَّكَ تَقُومُ أَدۡنَىٰ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j29-r7" data-storage="juz29-r7"><span>لَآ أُقۡسِمُ بِيَوۡمِ ٱلۡقِيَٰمَةِ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j29-r8" data-storage="juz29-r8"><span>وَيَطُوفُ عَلَيۡهِمۡ وِلۡدَٰنٞ مُّخَلَّدُونَ</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+
+<!-- الجزء الثلاثون -->
+<section class="juz-section" id="juz-30">
+    <h2 class="juz-title">الجزء الثلاثون</h2>
+    <div class="progress-container"><div class="progress-bar" id="progress-30"></div></div>
+    <div class="arba3-container">
+        <div class="ruba3" id="j30-r1" data-storage="juz30-r1"><span>عَمَّ يَتَسَآءَلُونَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j30-r2" data-storage="juz30-r2"><span>عَبَسَ وَتَوَلَّىٰٓ </span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j30-r3" data-storage="juz30-r3"><span>إِذَا ٱلسَّمَآءُ ٱنفَطَرَتۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j30-r4" data-storage="juz30-r4"><span>إِذَا ٱلسَّمَآءُ ٱنشَقَّتۡ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j30-r5" data-storage="juz30-r5"><span>سَبِّحِ ٱسۡمَ رَبِّكَ ٱلۡأَعۡلَى</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j30-r6" data-storage="juz30-r6"><span>لَا أُقْسِمُ بِهَٰذَا الْبَلَدِ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j30-r7" data-storage="juz30-r7"><span>أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ</span><button class="save-btn">تم الحفظ</button></div>
+        <div class="ruba3" id="j30-r8" data-storage="juz30-r8"><span>وَالْعَادِيَاتِ ضَبْحًا</span><button class="save-btn">تم الحفظ</button></div>
+    </div>
+</section>
+</section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // تشغيل لكل جزء موجود في الصفحة
+    const juzSections = document.querySelectorAll(".juz-section");
+
+    juzSections.forEach(section => {
+
+        const progressBar = section.querySelector(".progress-bar");
+        const rubu3Items = section.querySelectorAll(".ruba3");
+
+        // استرجاع الحالة من localStorage
+        rubu3Items.forEach(item => {
+
+            const key = item.dataset.storage;
+
+            if (localStorage.getItem(key) === "saved") {
+                item.classList.add("saved");
+            }
+
+            // زر الحفظ
+            const button = item.querySelector(".save-btn");
+if (item.classList.contains("saved")) {
+    button.textContent = "✔ تم الحفظ";
+}
+            button.addEventListener("click", function () {
+
+                item.classList.toggle("saved");
+
+               if (item.classList.contains("saved")) {
+    localStorage.setItem(key, "saved");
+    button.textContent = "✔ تم الحفظ";
+} else {
+    localStorage.removeItem(key);
+    button.textContent = "تم الحفظ";
+}
+
+                updateProgress();
+            });
+        });
+
+        // تحديث شريط التقدم
+        function updateProgress() {
+
+            const savedCount = section.querySelectorAll(".ruba3.saved").length;
+            const total = rubu3Items.length;
+
+            const percentage = (savedCount / total) * 100;
+
+            progressBar.style.width = percentage + "%";
+        }
+
+        // تشغيل أول مرة عند تحميل الصفحة
+        updateProgress();
+    });
+
+});
+// الوضع الليلي
+document.addEventListener("DOMContentLoaded", () => {
+    const modeBtn = document.getElementById("mode-toggle");
+
+    // نرجع آخر وضع محفوظ
+    if (localStorage.getItem("mode") === "dark") {
+        document.body.classList.add("dark-mode");
+        modeBtn.textContent = "☀️";
+    } else {
+        modeBtn.textContent = "🌙";
+    }
+
+    // عند الضغط على الزر
+    modeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+
+        if (document.body.classList.contains("dark-mode")) {
+            modeBtn.textContent = "☀️";
+            localStorage.setItem("mode", "dark");
+        } else {
+            modeBtn.textContent = "🌙";
+            localStorage.setItem("mode", "light");
+        }
+    });
+});
+
+// زر الرجوع
+function goBack() {
+    window.history.back();
+}
+// الصفحة
+  // استعادة حالة الأرباع المحفوظة عند تحميل الصفحة
+  document.addEventListener('DOMContentLoaded', () => {
+    for(let i=1; i<=8; i++){
+      const id = 'arba3-' + i;
+      if(localStorage.getItem(id) === 'saved'){
+        markSaved(id);
+      }
+    }
+    updateProgress('progress-part1');
+  });
+
+  function saveArba3(arba3Id, progressId){
+    localStorage.setItem(arba3Id, 'saved');
+    markSaved(arba3Id);
+    updateProgress(progressId);
+  }
+
+  function markSaved(arba3Id){
+    const container = document.getElementById(arba3Id);
+    if(container){
+      if(!container.querySelector('.saved')){
+        const span = document.createElement('span');
+        span.textContent = ' (تم الحفظ)';
+        span.classList.add('saved');
+        container.appendChild(span);
+      }
+    }
+  }
+
+  function updateProgress(progressId){
+    let savedCount = 0;
+    for(let i=1; i<=8; i++){
+      if(localStorage.getItem('arba3-' + i) === 'saved') savedCount++;
+    }
+    const bar = document.getElementById(progressId);
+    bar.style.width = (savedCount/8*100) + '%';
+  }
+</script>
+</body>
+</html>
+
+
+ 
