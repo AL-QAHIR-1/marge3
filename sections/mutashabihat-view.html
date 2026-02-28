@@ -133,7 +133,9 @@ body{
 .image-card img:hover{
     transform:scale(1.02);
 }
-  .image-wrapper {
+
+.image-wrapper {
+
     position: relative;
     min-height: 300px;
 }
@@ -194,7 +196,10 @@ body.dark .loader {
 
 </header>
 <div class="gallery" id="gallery"></div>
+
+<div class="image-wrapper">
   <div class="image-wrapper">
+
     <div class="loader">
         <div class="spinner"></div>
         <p>جاري التحميل...</p>
@@ -218,10 +223,7 @@ const surahId = params.get("id");
 const gallery = document.getElementById("gallery");
 
 const images = {
-    1: [
-        "../images/mutashabihat/1/1.jpg",
-        "../images/mutashabihat/1/2.jpg"
-    ],
+
     2: [
         
         "../images/mutashabihat/2/1.jpg",
@@ -785,14 +787,10 @@ if (gallery && images[surahId]) {
 
             link.appendChild(img);
 
-            const download = document.createElement("a");
-            download.href = item.src;
-            download.download = "";
-            download.className = "download-btn";
-            download.textContent = "تحميل الصورة بجودة عالية";
+    
 
             card.appendChild(link);
-            card.appendChild(download);
+        
 
             gallery.appendChild(card);
         });
@@ -802,7 +800,6 @@ if (gallery && images[surahId]) {
 } else {
     gallery.innerHTML = "<p>لا توجد متشابهات لهذه الصور☺</p>";
 }
-  
 const img = document.getElementById("mutashabihatImage");
 const loader = document.querySelector(".loader");
 
