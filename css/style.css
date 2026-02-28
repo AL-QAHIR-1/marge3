@@ -55,7 +55,7 @@ nav {
 }
 
 nav a {
-    margin: 0 12px;
+    margin: 0 7px;
     text-decoration: none;
     font-weight: 600;
     background: rgb(175, 96, 6);
@@ -124,3 +124,4 @@ footer {
     text-align: center;
     padding: 25px;
 }
+
