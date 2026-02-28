@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>من نحن</title>
+  <link rel="icon" href="../images/logo.png" type="image/png">
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Cairo', sans-serif;
+    background:#f7f9fc;
+    color:#222;
+}
+
+/* Hero */
+.hero{
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    text-align:center;
+    padding:70px 20px;
+}
+.hero h1{
+    font-size:40px;
+    margin-bottom:15px;
+}
+.hero p{
+    max-width:700px;
+    margin:auto;
+    font-size:18px;
+    line-height:1.8;
+}
+
+/* Section */
+.section{
+    padding:60px 20px;
+    text-align:center;
+}
+.section h2{
+    font-size:28px;
+    margin-bottom:40px;
+}
+
+/* Cards */
+.cards{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+}
+
+.card{
+    background:white;
+    width:300px;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.07);
+    transition:0.3s ease;
+}
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 35px rgba(0,0,0,0.15);
+}
+
+.card img{
+    width: 161px;
+    height: 219px;
+    border-radius: 29%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.card h3{
+    margin:10px 0 5px;
+    font-size:20px;
+}
+
+.role{
+     color: #08c332;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.card p{
+    font-size:15px;
+    line-height:1.7;
+    color:#444;
+}
+
+/* Profile Button */
+.profile-btn{
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 18px;
+    background:#2c5364;
+    color:white;
+    text-decoration:none;
+    border-radius:25px;
+    font-size:14px;
+    transition:0.3s;
+}
+.profile-btn:hover{
+    background:#1c3a45;
+}
+
+/* Footer Quote */
+.footer-quote{
+    margin-top:60px;
+    font-size:20px;
+    font-weight:600;
+    color:#2c5364;
+}
+
+@media(max-width:768px){
+    .hero h1{font-size:32px;}
+    .card{width:90%;}
+}
+.back-btn {
+    background: rgb(175, 96, 6);
+    border: none;
+    color: white;
+    padding: 11px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    font-family: inherit;
+
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+     <button class="back-btn" onclick="goBack()">
+        <span style='font-size:16px;'>&#8658;</span>
+    </button>
+    <h1>من نحن</h1>
+    <p>
+       منصة تعليمية تهدف إلى تسهيل دراسة القرآن الكريم من خلال عرض منظم وسريع وتجربة استخدام بسيطة وعملية تناسب جميع الفئات وبذات طالب الثانوية الازهرية دفعة2026 وعواتكم لنا بالتوفيق
+    </p>
+</div>
+
+<!-- Vision -->
+<div class="section">
+    <h2>رؤيتنا</h2>
+    <div class="cards">
+        <div class="card">
+            <h3>🎯 الهدف</h3>
+            <p>تقديم محتوى منظم يساعد على الفهم والحفظ والمراجعة بسهولة لطالب الثانوية الازهرية دفعة 2026 
+        </div>
+
+        <div class="card">
+            <h3>⚡ السرعة</h3>
+            <p>تصفح سريع بدون تعقيد أو تحميل زائد يؤثر على تجربة المستخدم.</p>
+        </div>
+
+        <div class="card">
+            <h3>📱 التوافق</h3>
+            <p>تصميم متجاوب يعمل بكفاءة على جميع الأجهزة.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Team -->
+
+<div class="section" id="team">
+    <h2>فريق العمل</h2>
+    <div class="cards">
+
+        <!-- Designer -->
+        <div class="card">
+            <img src="../images/my photo.jpg" alt="المصمم">
+            <h1>Islam Ahmed</h1>
+            <h3>المصمم والمطور</h3>
+            <div class="role">Frontend Developer & UI Designer</div>
+            <p>
+                مسؤول عن بناء المنصة برمجياً وتصميم تجربة المستخدم وواجهة التصفح بشكل احترافي ومنظم.
+            </p>
+            <a href="https://my-website-lake-theta.vercel.app/index.html" target="_blank" class="profile-btn">
+                زيارة البروفايل
+            </a>
+        </div>
+
+        <!-- Reviewer -->
+        <div class="card">
+            <img src="images/reviewer.jpg" alt="المراجع">
+            <h1>mohammed Hassan</h1>
+            <h3>المراجع</h3>
+            <div class="role">Content Reviewer</div>
+            <p>
+                مسؤول عن تدقيق المحتوى وتنظيمه وفق المنهج الصحيح لضمان الدقة والموثوقية.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="footer-quote">
+        نسأل الله أن يجعل هذا العمل خالصاً لوجهه الكريم
+    </div>
+</div>
+<script>
+    /* رجوع */
+function goBack(){
+    window.history.back();
+}
+</script>
+</body>
+</html>
