@@ -97,3 +97,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateProgress();
 });
+// الوضع الليلي
+document.addEventListener("DOMContentLoaded", () => {
+    const modeBtn = document.getElementById("mode-toggle");
+
+    // نرجع آخر وضع محفوظ
+    if (localStorage.getItem("mode") === "dark") {
+        document.body.classList.add("dark-mode");
+        modeBtn.textContent = "☀️";
+    } else {
+        modeBtn.textContent = "🌙";
+    }
+
+    // عند الضغط على الزر
+    modeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+
+        if (document.body.classList.contains("dark-mode")) {
+            modeBtn.textContent = "☀️";
+            localStorage.setItem("mode", "dark");
+        } else {
+            modeBtn.textContent = "🌙";
+            localStorage.setItem("mode", "light");
+        }
+    });
+});
