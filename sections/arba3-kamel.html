@@ -302,6 +302,97 @@ body.dark-mode .ruba3 {
 .title-h1{
     text-align: center;
 }
+.main-footer {
+    background: linear-gradient(135deg, #0f2c59, #1c3f7a);
+    padding: 50px 20px;
+    text-align: center;
+    margin-top: 60px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glow خفيف */
+.main-footer::before {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+    top: -100px;
+    right: -100px;
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: auto;
+    color: #fff;
+}
+
+/* الدعاء */
+.dua {
+    font-family: "Amiri", serif;
+    font-size: 20px;
+    line-height: 2;
+    color: #e2e8f0;
+    margin-bottom: 25px;
+}
+
+/* الخط الفاصل */
+.divider {
+    width: 60px;
+    height: 3px;
+    background: #d4af37;
+    margin: 20px auto;
+    border-radius: 10px;
+}
+
+.company a {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: 1px;
+
+background: linear-gradient(78deg, #fcbd00, #d9c999); 
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+
+    transition: 0.4s;
+}
+
+.company a:hover {
+    transform: scale(1.07);
+    filter: drop-shadow(0 0 8px rgba(0, 132, 255, 0.5));
+}
+.developer {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #b8ae94;
+}
+
+.developer a {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+
+    background: linear-gradient(45deg, #000000, #ff0000);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    transition: 0.3s;
+}
+
+.developer a:hover {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 6px rgba(252, 235, 0, 0.6));
+}
+</style>
 </style>
 </head>
 <body>
@@ -938,6 +1029,34 @@ function goBack() {
     bar.style.width = (savedCount/8*100) + '%';
   }
 </script>
+<footer class="main-footer">
+
+    <div class="footer-content">
+
+        <p class="dua">
+            🤍 هذا العمل خالص لوجه الله  
+            نسأل الله أن يتقبله منا ومنكم  
+            ولا تنسونا من صالح دعائكم 🤲
+        </p>
+
+        <div class="divider"></div>
+
+        <p class="company">
+            <a href="https://aqta-chi.vercel.app/index.html" target="_blank">
+                Al-Qahir Technology
+            </a>
+        </p>
+
+        <p class="developer">
+            Designed & Developed by
+            <a href="https://my-website-lake-theta.vercel.app/" target="_blank">
+                Islam Ahmed
+            </a>
+        </p>
+
+    </div>
+
+</footer>
 </body>
 </html>
 
