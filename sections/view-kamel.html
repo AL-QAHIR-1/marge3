@@ -6,7 +6,7 @@
 <title>عرض السورة</title>
 
 <link rel="icon" href="../images/logo.png" type="image/png">
-
+<link rel="stylesheet" href="../CSS/style.css">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
@@ -33,17 +33,54 @@ body{
     align-items:center;
     position:relative;
 }
-
-body.light{ background:#f4f6fb; }
-
-.viewer-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px 20px;
-    background:linear-gradient(135deg,#0f2c59,#1c3f7a);
-    color:white;
+#mode-toggle {
+    font-size: 24px;          /* حجم الأيقونة */
+    background: transparent;   /* بدون خلفية */
+    border: none;              /* بدون حدود */
+    cursor: pointer;
+    transition: transform 0.3s, color 0.3s; /* تأثير حركة ولون */
 }
+
+/* عند التحويم على الأيقونة */
+#mode-toggle:hover {
+    transform: rotate(20deg);  /* دوران بسيط عند المرور */
+    color: #ffd700;             /* لون ذهبي عند المرور */
+}
+
+/* أيقونة القمر في الوضع الليلي */
+body.dark-mode #mode-toggle {
+    color: #f0e68c; /* لون القمر فاتح */
+    text-shadow: 0 0 5px #fff; /* توهج خفيف للقمر */
+}
+
+/* أيقونة الشمس في النهاري */
+body:not(.dark-mode) #mode-toggle {
+    color: #ffdd00; /* لون الشمس أصفر */
+    text-shadow: 0 0 3px #fffa8c; /* توهج خفيف للشمس */
+}
+
+body.dark-mode .main-header {
+    background: linear-gradient(179deg, #411c00, #712e00);
+    border: solid #000000 5px;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    flex-direction: row;
+}
+
+.main-header {
+    display: flex;
+    background: linear-gradient(3deg, #061731, #10449d);
+    color: white;
+    padding: 16px 19px 8px;
+    text-align: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;}
 
 .right-section{ display:flex; align-items:center; gap:10px; }
 .logo{ width:40px; height:40px; object-fit:contain; }
@@ -220,28 +257,51 @@ box-shadow:0 8px 20px rgba(175,96,6,0.5);
     background:linear-gradient(90deg,#0f2c59,#1c3f7a);
     transition:width .3s ease;
 }
+body.dark-mode .back-btn {
+    background: rgb(175, 96, 6);
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    font-family: inherit;
+
+}
+.back-btn {
+    background: rgb(6, 78, 211);
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    font-family: inherit;
+
+}
+
 
 </style>
 </head>
-
+ 
 <body class="light">
 
-<div class="viewer-header">
-    <div class="left-section">
-        <button onclick="goBack()">↩</button>
-    </div>
-
+<header class="main-header">
+<div>
+    <button class="back-btn" onclick="goBack()">
+        <span style='font-size:16px;'>&#8658;</span>
+    </button>
+        <button id="mode-toggle">🌙</button>
+         </div>
     <h2 id="surah-name" class="surah-name"></h2>
-
-    <div class="right-section">
-        <img src="../images/logo.png" class="logo">
+    <div class="logo-title">
+        <img src="../images/logo.png" alt="logo" class="logo">
     </div>
-</div>
-<div class="progress-wrapper">
-    <div class="progress-bar" id="progressBar"></div>
-</div>
 
-<div class="page-counter" id="pageCounter"></div>
+</header>
+
 <div class="ashom">
     <button onclick="prevPage()">▶</button>
 
@@ -253,10 +313,7 @@ box-shadow:0 8px 20px rgba(175,96,6,0.5);
     <button onclick="nextPage()">◀</button>
 </div>
 
-<div id="pdf-container">
-    <div class="progress-wrapper">
-    <div class="progress-bar" id="progressBar"></div>
-</div>
+
     <img id="page-img" loading="lazy">
     
     <div class="finish-message" id="finishBox">
@@ -548,34 +605,33 @@ document.getElementById("pageInput")
 });
 
 </script>
-<footer class="main-footer">
+<script>
+    // الوضع الليلي
+document.addEventListener("DOMContentLoaded", () => {
+    const modeBtn = document.getElementById("mode-toggle");
 
-    <div class="footer-content">
+    // نرجع آخر وضع محفوظ
+    if (localStorage.getItem("mode") === "dark") {
+        document.body.classList.add("dark-mode");
+        modeBtn.textContent = "☀️";
+    } else {
+        modeBtn.textContent = "🌙";
+    }
 
-        <p class="dua">
-            🤍 هذا العمل خالص لوجه الله  
-            نسأل الله أن يتقبله منا ومنكم  
-            ولا تنسونا من صالح دعائكم 🤲
-        </p>
+    // عند الضغط على الزر
+    modeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
 
-        <div class="divider"></div>
-
-        <p class="company">
-            <a href="https://aqta-chi.vercel.app/index.html" target="_blank">
-                Al-Qahir Technology
-            </a>
-        </p>
-
-        <p class="developer">
-            Designed & Developed by
-            <a href="https://my-website-lake-theta.vercel.app/" target="_blank">
-                Islam Ahmed
-            </a>
-        </p>
-
-    </div>
-
-</footer>
+        if (document.body.classList.contains("dark-mode")) {
+            modeBtn.textContent = "☀️";
+            localStorage.setItem("mode", "dark");
+        } else {
+            modeBtn.textContent = "🌙";
+            localStorage.setItem("mode", "light");
+        }
+    });
+});
+</script>
 </body>
 
 </html>

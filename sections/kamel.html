@@ -5,8 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>القراءن الكريم</title>
   <link rel="icon" href="../images/logo.png" type="image/png">
+  <link rel="stylesheet" href="../CSS/style.css">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
 <style>
+    body.dark-mode .main-header {
+    background: linear-gradient(179deg, #773e2c, #712811);
+    border: solid #000000 5px;
+        padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    flex-direction: row;
+}
+#mode-toggle {
+    font-size: 24px;          /* حجم الأيقونة */
+    background: transparent;   /* بدون خلفية */
+    border: none;              /* بدون حدود */
+    cursor: pointer;
+    transition: transform 0.3s, color 0.3s; /* تأثير حركة ولون */
+}
+
+/* عند التحويم على الأيقونة */
+#mode-toggle:hover {
+    transform: rotate(20deg);  /* دوران بسيط عند المرور */
+    color: #ffd700;             /* لون ذهبي عند المرور */
+}
+
+/* أيقونة القمر في الوضع الليلي */
+body.dark-mode #mode-toggle {
+    color: #f0e68c; /* لون القمر فاتح */
+    text-shadow: 0 0 5px #fff; /* توهج خفيف للقمر */
+}
+
+/* أيقونة الشمس في النهاري */
+body:not(.dark-mode) #mode-toggle {
+    color: #ffdd00; /* لون الشمس أصفر */
+    text-shadow: 0 0 3px #fffa8c; /* توهج خفيف للشمس */
+}
+body.dark-mode .back-btn {
+    background: rgb(175, 96, 6);
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    font-family: inherit;
+
+}
     .main-header {
     background: linear-gradient(135deg, #0f2c59, #1c3f7a);
     color: white;
@@ -14,8 +62,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-direction: row-reverse;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+flex-direction: row;    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .logo-title {
@@ -85,6 +132,68 @@
     justify-content: space-between;
     direction: rtl;  
 }
+.dark-mode .surah-item {
+    background-color: #270e04;
+    border: solid #ff7300 3px;
+    display: flex;
+    border-radius: 24px;
+    padding: 16px 12px;
+    text-align: center;
+    font-size: 23px;
+    font-weight: 600;
+    margin: 10px;
+    text-decoration: none;
+    color: #ffffff;
+    position: relative;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+    transition: 0.4s ease;
+    overflow: hidden;
+    gap: 11px;
+    align-items: stretch;
+    justify-content: space-between;
+    flex-direction: column;
+}
+ .surah-item {
+    background-color: #ffffff;
+    border: solid #152e8f 3px;
+    display: flex;
+    border-radius: 24px;
+    padding: 16px 12px;
+    text-align: center;
+    font-size: 23px;
+    font-weight: 600;
+    margin: 10px;
+    text-decoration: none;
+    color: #ffffff;
+    position: relative;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+    transition: 0.4s ease;
+    overflow: hidden;
+    gap: 11px;
+    align-items: stretch;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.dark-mode .save-btn {
+    margin-top: 10px;
+    padding: 6px 12px;
+    border: none;
+    background: #a67235;
+    color: #ffffff;
+    border-radius: 6px;
+    font-family: system-ui;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+}
+   .dark-mode .surah-name {
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    transition: 0.3s;}
+
 
 .surah-item span {
     font-size: 18px;
@@ -99,12 +208,21 @@
     border-radius: 20px;
     cursor: pointer;
     transition: 0.3s;
+    border: solid black;
     font-family: system-ui;
+    font-weight: 600;
+
 }
 
 .surah-item button.saved {
-    background: rgb(175, 96, 6);
-    color: #ffffff;
+    background:rgb(63 140 51);
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    border: solid black;
     font-family: system-ui;
 }
 .surah-name {
@@ -221,7 +339,7 @@ background-clip: text;
     font-weight: bold;
     text-decoration: none;
 
-    background: linear-gradient(45deg, #000000, #ff0000);
+    background: linear-gradient(45deg, #000000, #000000);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -231,7 +349,7 @@ background-clip: text;
 
 .developer a:hover {
     transform: scale(1.08);
-    filter: drop-shadow(0 0 6px rgba(252, 235, 0, 0.6));
+    filter: drop-shadow(0 0 6px rgb(255, 238, 0));
 }
 </style>
 </style>
@@ -240,11 +358,12 @@ background-clip: text;
 <body>
 
 <header class="main-header">
-
+<div>
     <button class="back-btn" onclick="goBack()">
         <span style='font-size:16px;'>&#8658;</span>
     </button>
-
+        <button id="mode-toggle">🌙</button>
+         </div>
     <h1>مَرجِع الأَزّهَرِي</h1>
     
     <div class="logo-title">
@@ -1228,6 +1347,28 @@ document.addEventListener("DOMContentLoaded", function () {
     updateProgress();
 });
 
+// استرجاع الحالة
+            if (localStorage.getItem(key) === "saved") {
+                item.classList.add("saved");
+                button.textContent = "✔ تم الحفظ";
+            }
+
+            button.addEventListener("click", function () {
+
+                item.classList.toggle("saved");
+
+                if (item.classList.contains("saved")) {
+                    localStorage.setItem(key, "saved");
+                    button.textContent = "✔ تم الحفظ";
+                } else {
+                    localStorage.removeItem(key);
+                    button.textContent = "تم الحفظ";
+                }
+
+                updateProgress();
+            });
+
+    
  //زر الرجوع 
 function goBack() {
     window.history.back();
@@ -1263,7 +1404,34 @@ function goBack() {
 
 </footer>
 
-<script src="../JS/script.js"></script>
+<script >
+
+    // الوضع الليلي
+document.addEventListener("DOMContentLoaded", () => {
+    const modeBtn = document.getElementById("mode-toggle");
+
+    // نرجع آخر وضع محفوظ
+    if (localStorage.getItem("mode") === "dark") {
+        document.body.classList.add("dark-mode");
+        modeBtn.textContent = "☀️";
+    } else {
+        modeBtn.textContent = "🌙";
+    }
+
+    // عند الضغط على الزر
+    modeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+
+        if (document.body.classList.contains("dark-mode")) {
+            modeBtn.textContent = "☀️";
+            localStorage.setItem("mode", "dark");
+        } else {
+            modeBtn.textContent = "🌙";
+            localStorage.setItem("mode", "light");
+        }
+    });
+});
+</script>
 
 </body>
 </html>
